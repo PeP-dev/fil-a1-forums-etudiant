@@ -1,0 +1,78 @@
+@startuml
+entity CATEGORY {
+* ID_CATEGORY : number <<generated>>
+* ID_GROUPE : number <<FK>>
+--
+* LIBELLE : text
+}
+
+entity POST {
+  * ID : number <<FK>>
+  --
+  * LIBELLE : text
+  DESCRIPTION : text
+}
+
+entity CIR_CATEGORY_POST {
+    ID_GROUPE : number <<FK>>
+    ID_POST : number <<FK>>
+}
+entity GROUPE {
+  * ID : number <<FK>>
+  --
+  * ID_ECOLE : number <<FK>>
+  * LIBELLE : text
+  DESCRIPTION : text
+}
+
+entity ECOLE {
+  * ID : number <<FK>>
+  --
+  * LIBELLE : text
+  DESCRIPTION : text
+}
+
+entity TYPE_ECOLE {
+* ID_TYPE : number <<generated>>
+--
+LIBELLE : text
+}
+
+entity UTILISATEUR {
+* ID_UTILISATEUR
+--
+* PSEUDO
+AVATAR_URL
+NOTE_PERSO
+}
+
+entity ROLE {
+* ID_ROLE
+--
+LIBELLE
+}
+
+entity MANAGEABLE_RESSOURCE {
+    * ID : number <<generated>>
+}
+
+entity CIR_ROLE_RESSOURCE_UTILISATEUR {
+    * ID : number <<FK>>
+    * ID_UTILISATEUR : number <<FK>>
+    --
+    * ID_ROLE : number <<FK>>
+}
+TYPE_ECOLE |o-left-o{ ECOLE
+CATEGORY }|-right-|| GROUPE
+GROUPE ||--o{ POST
+ECOLE ||-left-|{ GROUPE
+POST ||--o{ POST
+CIR_CATEGORY_POST }|-right-|{ CATEGORY
+CIR_CATEGORY_POST }|--|{ POST
+GROUPE ||--|| MANAGEABLE_RESSOURCE
+POST ||-right-|| MANAGEABLE_RESSOURCE
+ECOLE ||--|| MANAGEABLE_RESSOURCE
+MANAGEABLE_RESSOURCE }o-down-o{ CIR_ROLE_RESSOURCE_UTILISATEUR
+UTILISATEUR }o-left-o{ CIR_ROLE_RESSOURCE_UTILISATEUR
+ROLE }|-right-o{ CIR_ROLE_RESSOURCE_UTILISATEUR
+@enduml
