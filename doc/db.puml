@@ -7,15 +7,15 @@ entity CATEGORY {
 }
 
 entity POST {
-  * ID : number <<FK>>
+  * ID : number <<generated>>
+  * GROUPE_ID : number<<FK>>
   --
   * LIBELLE : text
   DESCRIPTION : text
 }
-
 entity CIR_CATEGORY_POST {
-    ID_GROUPE : number <<FK>>
-    ID_POST : number <<FK>>
+    * ID_GROUPE : number <<FK>>
+    * ID_POST : number <<FK>>
 }
 entity GROUPE {
   * ID : number <<FK>>
@@ -32,6 +32,25 @@ entity ECOLE {
   DESCRIPTION : text
 }
 
+entity REPLY {
+    * POST_ID : number<<FK>>
+    * GROUP_ID : number<<FK>>
+    * ID : number<<generated>>
+    --
+    * CONTENT : text
+    ID_REPLY
+}
+
+entity LIKE_REPLY {
+    * ID_USER
+    * ID_REPLY
+}
+
+entity LIKE_POST {
+    * ID_USER
+    * ID_POST
+}
+
 entity TYPE_ECOLE {
 * ID_TYPE : number <<generated>>
 --
@@ -42,7 +61,9 @@ entity UTILISATEUR {
 * ID_UTILISATEUR
 --
 * PSEUDO
+* PWD
 AVATAR_URL
+GLOBAL_ADMIN
 NOTE_PERSO
 }
 
@@ -52,27 +73,27 @@ entity ROLE {
 LIBELLE
 }
 
-entity MANAGEABLE_RESSOURCE {
-    * ID : number <<generated>>
-}
-
-entity CIR_ROLE_RESSOURCE_UTILISATEUR {
+entity ROLE_GROUPE {
     * ID : number <<FK>>
     * ID_UTILISATEUR : number <<FK>>
     --
     * ID_ROLE : number <<FK>>
 }
-TYPE_ECOLE |o-left-o{ ECOLE
+
+TYPE_ECOLE |o-up-o{ ECOLE
 CATEGORY }|-right-|| GROUPE
-GROUPE ||--o{ POST
+GROUPE ||-down-o{ POST
 ECOLE ||-left-|{ GROUPE
-POST ||--o{ POST
-CIR_CATEGORY_POST }|-right-|{ CATEGORY
-CIR_CATEGORY_POST }|--|{ POST
-GROUPE ||--|| MANAGEABLE_RESSOURCE
-POST ||-right-|| MANAGEABLE_RESSOURCE
-ECOLE ||--|| MANAGEABLE_RESSOURCE
-MANAGEABLE_RESSOURCE }o-down-o{ CIR_ROLE_RESSOURCE_UTILISATEUR
-UTILISATEUR }o-left-o{ CIR_ROLE_RESSOURCE_UTILISATEUR
-ROLE }|-right-o{ CIR_ROLE_RESSOURCE_UTILISATEUR
+POST ||--o{ REPLY
+REPLY ||-right-o{ REPLY
+CIR_CATEGORY_POST }|-up-|{ CATEGORY
+CIR_CATEGORY_POST }|-right-|{ POST
+GROUPE ||-up-|{ ROLE_GROUPE
+UTILISATEUR }o-left-o{ ROLE_GROUPE
+UTILISATEUR }o-down-|{ ECOLE
+ROLE }|-right-o{ ROLE_GROUPE
+UTILISATEUR }o--o{ LIKE_POST
+UTILISATEUR }o--o{ LIKE_REPLY
+POST }o--o{ LIKE_POST
+REPLY }o--o{ LIKE_REPLY
 @enduml
