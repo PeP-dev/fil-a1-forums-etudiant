@@ -15,20 +15,25 @@ public class Post {
     /**
      * Identifiant de la publication
      */
-    public String id;
+    private String id;
 
     /**
      * Identifiant du groupe dans lequel se situe la publication
      */
-    public String groupId;
+    private String groupId;
 
     /**
      * Titre de la publication
      */
-    public String title;
+    private String title;
 
     /**
      * Contenu de la publication
      */
-    public String content;
+    private String content;
+
+    /**
+     * Catégorie de la publication
+     */
+    private String categoryId;
 }

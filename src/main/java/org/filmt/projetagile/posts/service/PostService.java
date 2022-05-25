@@ -5,6 +5,8 @@ import java.util.List;
 import org.filmt.projetagile.posts.model.Post;
 
 public interface PostService {
+
+    Post getPostById(String postId);
     List<Post> getPostsByGroupId(String groupId);
 
     List<Post> getPostByCategory(String groupId, String categoryId);

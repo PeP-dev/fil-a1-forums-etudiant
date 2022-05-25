@@ -1,22 +1,10 @@
 package org.filmt.projetagile.likes.dao;
 
-import java.util.Collections;
 import java.util.List;
 
 public interface LikeDAO<T> {
+    List<T> getLikedContentByUser(String userId);
 
-
-    default List<T> getLikedContentByUser(String userId) {
-        return Collections.emptyList();
-    }
-
-    default int getLikeAmount(String contentId) {
-        return 0;
-    }
-
-    default void removeLike(String userId, String contentId) {
-
-    }
-    
-    String getDaoTableName();
+    int getLikeAmount(String contentId);
+    void removeLike(String userId, String contentId);
 }

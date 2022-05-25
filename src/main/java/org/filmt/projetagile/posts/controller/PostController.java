@@ -20,7 +20,6 @@ import lombok.AllArgsConstructor;
 @RestController
 @AllArgsConstructor
 @RequestMapping("api/posts")
-
 public class PostController {
 
     private final PostService postService;
