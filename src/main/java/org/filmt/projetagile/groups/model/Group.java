@@ -31,4 +31,6 @@ public class Group {
      * Description du groupe, affiché à la demande de détails
      */
     public String description;
+
+
 }

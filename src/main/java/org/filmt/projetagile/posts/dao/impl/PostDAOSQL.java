@@ -29,6 +29,7 @@ public class PostDAOSQL extends ReddImtDAOSQL implements PostDAO {
     private static final String UPDATE_POST = "UPDATE REDDIMT_POST SET ID_GROUP=:groupId, TITLE=:title, POST_CONTENT=:content, ID_CATEGORY=:categoryId";
 
     private static final String DELETE_POST = "DELETE FROM REDDIMT_POST";
+
     private static final RowMapper<Post> POST_MAPPER = (rs, ri)-> new Post(
         rs.getString("ID"),
         rs.getString("ID_GROUP"),
