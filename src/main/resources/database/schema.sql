@@ -39,8 +39,6 @@ CREATE TABLE REDDIMT_Group
     FOREIGN KEY (id_ecole) REFERENCES REDDIMT_School(id)
 );
 
-
-
 CREATE TABLE REDDIMT_Role_groupe
 (
     id_groupe int NOT NULL,
@@ -64,10 +62,12 @@ CREATE TABLE REDDIMT_Category
 CREATE TABLE REDDIMT_Post
 (
     id int PRIMARY KEY NOT NULL,
-    id_groupe int NOT NULL,
+    id_group int NOT NULL,
     libelle varchar(255),
     description text,
-    FOREIGN KEY (id_groupe) REFERENCES REDDIMT_Group(id)
+    id_category int NOT NULL,
+    FOREIGN KEY (id_group) REFERENCES REDDIMT_Group(id),
+    FOREIGN KEY (id_category) REFERENCES REDDIMT_Category(id)
 );
 
 CREATE TABLE REDDIMT_Reply
