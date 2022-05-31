@@ -2,31 +2,32 @@ package org.filmt.projetagile.posts.controller;
 
 import java.util.List;
 
+import org.filmt.projetagile.exception.GroupNotFoundException;
+import org.filmt.projetagile.posts.dao.impl.PostDAOSQL;
 import org.filmt.projetagile.posts.model.Post;
 import org.filmt.projetagile.posts.service.PostService;
+import org.filmt.projetagile.posts.service.impl.PostServiceImpl;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import lombok.AllArgsConstructor;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("api/posts")
 public class PostController {
 
-    private final PostService postService;
+    private final PostServiceImpl postService;
 
     @GetMapping("/{groupId}")
     public List<Post> getPosts(@PathVariable String groupId) {
-        return postService.getPostsByGroupId(groupId);
+        try {
+            return postService.getPostsByGroupId(groupId) ;
+        } catch (GroupNotFoundException ex) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Group Not Found", ex);
+        }
     }
 
     @GetMapping(value = "/{groupId}", params = "categoryId")
@@ -36,19 +37,19 @@ public class PostController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Post create(Post post) {
+    public Post create(@RequestBody Post post) {
         return postService.create(post);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping
-    public Post update(Post post) {
+    public Post update(@RequestBody Post post) {
         return postService.update(post);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{postId}")
-    public void delete(String post) {
+    public void delete(@PathVariable String post) {
         postService.delete(post);
     }
 }

@@ -10,8 +10,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -24,7 +22,7 @@ public class PostDAOSQL extends ReddImtDAOSQL implements PostDAO {
 
     private static final String CATEGORY_CONDITION = " WHERE ID_CATEGORY =:categoryId";
 
-    private static final String INSERT_POST = "INSERT INTO REDDIMT_POST VALUES(:groupId, :title, :content, :categoryId)";
+    private static final String INSERT_POST = "INSERT INTO REDDIMT_POST VALUES(:id, :groupId, :title, :content, :categoryId, :userName)";
 
     private static final String UPDATE_POST = "UPDATE REDDIMT_POST SET ID_GROUP=:groupId, TITLE=:title, POST_CONTENT=:content, ID_CATEGORY=:categoryId";
 
@@ -35,7 +33,8 @@ public class PostDAOSQL extends ReddImtDAOSQL implements PostDAO {
         rs.getString("ID_GROUP"),
         rs.getString("TITLE"),
         rs.getString("POST_CONTENT"),
-        rs.getString("ID_CATEGORY"));
+        rs.getString("ID_CATEGORY"),
+        rs.getString("USER_NAME"));
     public PostDAOSQL(final NamedParameterJdbcTemplate template) {
         super(template);
     }
@@ -68,15 +67,15 @@ public class PostDAOSQL extends ReddImtDAOSQL implements PostDAO {
     }
 
     @Override
-    public Post create(final Post post) {
-        KeyHolder keyHolder = new GeneratedKeyHolder();
+    public void create(final Post post) {
         var source = new MapSqlParameterSource();
+        source.addValue("id", post.getId());
         source.addValue("groupId", post.getGroupId());
         source.addValue("title", post.getTitle());
         source.addValue("content", post.getContent());
         source.addValue("categoryId", post.getCategoryId());
-        getJdbcTemplate().update(INSERT_POST, source, keyHolder);
-        return new Post(keyHolder.getKeyAs(String.class), post.getGroupId(), post.getTitle(), post.getContent(), post.getCategoryId());
+        source.addValue("userName", post.getUserName());
+        getJdbcTemplate().update(INSERT_POST, source);
     }
 
     @Override

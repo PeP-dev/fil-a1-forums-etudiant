@@ -36,4 +36,9 @@ public class Post {
      * Catégorie de la publication
      */
     private String categoryId;
+
+    /**
+     * Utilisateur qui a poste
+     */
+    private String userName;
 }

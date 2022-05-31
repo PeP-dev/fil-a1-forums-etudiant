@@ -1,4 +1,4 @@
-package org.filmt.projetagile.groups.service.impl;
+package org.filmt.projetagile.groups.dao;
 
 import org.filmt.projetagile.common.ReddImtDAOSQL;
 import org.filmt.projetagile.groups.dao.GroupDAO;
