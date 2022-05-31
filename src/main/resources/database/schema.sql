@@ -76,7 +76,7 @@ CREATE TABLE REDDIMT_Reply
 (
     id varchar(128) PRIMARY KEY NOT NULL,
     id_post varchar(128) NOT NULL,
-    id_reply varchar(128) NOT NULL,
+    id_reply varchar(128),
     content text,
     FOREIGN KEY (id_post) REFERENCES REDDIMT_Post(id),
     FOREIGN KEY (id_reply) REFERENCES REDDIMT_Reply(id)
