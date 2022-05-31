@@ -1,6 +1,6 @@
 CREATE TABLE REDDIMT_User
 (
-    id varchar(128) PRIMARY KEY NOT NULL,
+    user_name varchar(128) PRIMARY KEY NOT NULL,
     pseudo varchar(100) NOT NULL,
     password varchar(100) NOT NULL,
     email varchar(255) NOT NULL,
@@ -41,22 +41,22 @@ CREATE TABLE REDDIMT_Group
 
 CREATE TABLE REDDIMT_Role_groupe
 (
-    id_groupe varchar(128) NOT NULL,
-    id_user varchar(128) NOT NULL,
+    id_group varchar(128) NOT NULL,
+    user_name varchar(128) NOT NULL,
     id_role varchar(128) NOT NULL,
-    CONSTRAINT PK_Role_Groupe PRIMARY KEY (id_groupe,id_user),
-    FOREIGN KEY (id_groupe) REFERENCES REDDIMT_Group(id),
-    FOREIGN KEY (id_user) REFERENCES REDDIMT_User(id),
+    CONSTRAINT PK_Role_Groupe PRIMARY KEY (id_group,user_name),
+    FOREIGN KEY (id_group) REFERENCES REDDIMT_Group(id),
+    FOREIGN KEY (user_name) REFERENCES REDDIMT_User(user_name),
     FOREIGN KEY (id_role) REFERENCES REDDIMT_Role(id)
 );
 
 CREATE TABLE REDDIMT_Category
 (
     id varchar(128) PRIMARY KEY NOT NULL,
-    id_groupe varchar(128),
+    id_group varchar(128),
     libelle varchar(255),
     description text,
-    FOREIGN KEY (id_groupe) REFERENCES REDDIMT_Group(id)
+    FOREIGN KEY (id_group) REFERENCES REDDIMT_Group(id)
 );
 
 CREATE TABLE REDDIMT_Post
@@ -66,6 +66,8 @@ CREATE TABLE REDDIMT_Post
     title varchar(255),
     post_content text,
     id_category varchar(128) NOT NULL,
+    user_name varchar(128) NOT NULL,
+    FOREIGN KEY (user_name) REFERENCES REDDIMT_User(user_name),
     FOREIGN KEY (id_group) REFERENCES REDDIMT_Group(id),
     FOREIGN KEY (id_category) REFERENCES REDDIMT_Category(id)
 );
@@ -73,28 +75,28 @@ CREATE TABLE REDDIMT_Post
 CREATE TABLE REDDIMT_Reply
 (
     id varchar(128) PRIMARY KEY NOT NULL,
-    id_poste varchar(128) NOT NULL,
+    id_post varchar(128) NOT NULL,
     id_reply varchar(128) NOT NULL,
     content text,
-    FOREIGN KEY (id_poste) REFERENCES REDDIMT_Post(id),
+    FOREIGN KEY (id_post) REFERENCES REDDIMT_Post(id),
     FOREIGN KEY (id_reply) REFERENCES REDDIMT_Reply(id)
 );
 
 CREATE TABLE REDDIMT_Like_Post
 (
-    id_user varchar(128) NOT NULL,
+    user_name varchar(128) NOT NULL,
     id_post varchar(128) NOT NULL,
-    CONSTRAINT PK_Like_Post PRIMARY KEY (id_user,id_post),
-    FOREIGN KEY (id_user) REFERENCES REDDIMT_User(id),
+    CONSTRAINT PK_Like_Post PRIMARY KEY (user_name,id_post),
+    FOREIGN KEY (user_name) REFERENCES REDDIMT_User(user_name),
     FOREIGN KEY (id_post) REFERENCES REDDIMT_Post(id)
 );
 
 CREATE TABLE REDDIMT_Like_Reply
 (
-    id_user varchar(128) NOT NULL,
+    user_name varchar(128) NOT NULL,
     id_reply varchar(128) NOT NULL,
-    CONSTRAINT PK_Like_Reply PRIMARY KEY (id_user,id_reply),
-    FOREIGN KEY (id_user) REFERENCES REDDIMT_User(id),
+    CONSTRAINT PK_Like_Reply PRIMARY KEY (user_name,id_reply),
+    FOREIGN KEY (user_name) REFERENCES REDDIMT_User(user_name),
     FOREIGN KEY (id_reply) REFERENCES REDDIMT_Reply(id)
 );
 
