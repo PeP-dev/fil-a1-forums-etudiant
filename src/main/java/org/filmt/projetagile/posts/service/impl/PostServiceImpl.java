@@ -1,6 +1,7 @@
 package org.filmt.projetagile.posts.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.filmt.projetagile.exception.GroupNotFoundException;
@@ -22,8 +23,8 @@ public class PostServiceImpl implements PostService {
     private final PostDAO postDao;
 
     @Override
-    public Post getPostById(final String postId) {
-        return null;
+    public Optional<Post> getPostById(final String postId) {
+        return Optional.empty();
     }
 
     @Override
