@@ -3,7 +3,7 @@ CREATE TABLE REDDIMT_User
     user_name varchar(128) PRIMARY KEY NOT NULL,
     pseudo varchar(100) NOT NULL,
     password varchar(100) NOT NULL,
-    email varchar(255) NOT NULL,
+    email varchar(255),
     avatar_url text,
     note_perso text,
     global_admin boolean NOT NULL
