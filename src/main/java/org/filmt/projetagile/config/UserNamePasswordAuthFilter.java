@@ -25,7 +25,7 @@ public class UserNamePasswordAuthFilter extends OncePerRequestFilter {
             LoginCredentials credentials = MAPPER.readValue(request.getInputStream(), LoginCredentials.class);
             SecurityContextHolder.getContext().setAuthentication(
                     new UsernamePasswordAuthenticationToken(
-                            credentials.getUserName(),
+                            credentials.getUsername(),
                             credentials.getPassword()
                     )
             );

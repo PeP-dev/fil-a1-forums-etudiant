@@ -2,7 +2,7 @@ package org.filmt.projetagile.auth.controller;
 
 import lombok.AllArgsConstructor;
 import org.filmt.projetagile.auth.model.LoginCredentials;
-import org.filmt.projetagile.auth.service.UserService;
+import org.filmt.projetagile.auth.service.AuthService;
 import org.filmt.projetagile.config.CookieAuthenticationFilter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
+
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -26,7 +25,7 @@ import java.util.stream.Stream;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private UserService userService;
+    private AuthService userService;
 
     @PostMapping("/register")
     public ResponseEntity<Void> register(@RequestBody LoginCredentials user) {
@@ -39,15 +38,6 @@ public class AuthController {
         if (userDetails == null) {
             return ResponseEntity.badRequest().build();
         }
-        Cookie cookie = new Cookie(CookieAuthenticationFilter.COOKIE_NAME,
-                userService.createToken(userDetails));
-        cookie.setHttpOnly(true);
-        cookie.setSecure(true);
-        cookie.setMaxAge(Duration.of(30, ChronoUnit.DAYS).toSecondsPart());
-        cookie.setPath("/");
-
-        response.addCookie(cookie);
-
         return ResponseEntity.ok(userDetails);
     }
 

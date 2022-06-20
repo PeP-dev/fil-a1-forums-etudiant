@@ -5,7 +5,7 @@ import org.filmt.projetagile.auth.model.LoginCredentials;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface UserService extends UserDetailsService {
+public interface AuthService extends UserDetailsService {
 
     UserDetails login(String userName, String password);
 

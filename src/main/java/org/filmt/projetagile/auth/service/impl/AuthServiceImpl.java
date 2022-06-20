@@ -1,11 +1,10 @@
 package org.filmt.projetagile.auth.service.impl;
 
-import lombok.AllArgsConstructor;
 import org.filmt.projetagile.auth.dao.AuthenticationDAO;
 import org.filmt.projetagile.auth.model.GroupRole;
 import org.filmt.projetagile.auth.model.LoginCredentials;
-import org.filmt.projetagile.auth.model.UserModel;
-import org.filmt.projetagile.auth.service.UserService;
+import org.filmt.projetagile.user.model.UserModel;
+import org.filmt.projetagile.auth.service.AuthService;
 import org.filmt.projetagile.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
@@ -24,7 +23,7 @@ import java.util.Objects;
 
 @Service
 @Primary
-public class UserServiceImpl implements UserService {
+public class AuthServiceImpl implements AuthService {
 
     private final AuthenticationDAO authenticationDAO;
 
@@ -33,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(AuthenticationDAO authenticationDAO, PasswordEncoder passwordEncoder) {
+    public AuthServiceImpl(AuthenticationDAO authenticationDAO, PasswordEncoder passwordEncoder) {
         this.authenticationDAO = authenticationDAO;
         this.passwordEncoder = passwordEncoder;
     }
@@ -92,7 +91,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails registerUser(final LoginCredentials credentials) {
         String encodedPass = passwordEncoder.encode(credentials.getPassword());
-        UserModel model = new UserModel(credentials.getUserName(), encodedPass);
+        UserModel model = new UserModel(credentials.getUsername(), encodedPass);
         authenticationDAO.registerUser(model);
         return model;
     }

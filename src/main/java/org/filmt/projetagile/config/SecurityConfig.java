@@ -1,13 +1,16 @@
 package org.filmt.projetagile.config;
 
 import lombok.AllArgsConstructor;
+
+import org.filmt.projetagile.auth.service.AuthService;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 /**
@@ -29,19 +32,36 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticationEntryPoint(userAuthenticationEntryPoint)
                 .and()
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(new UserNamePasswordAuthFilter(), BasicAuthenticationFilter.class)
-                .addFilterBefore(new CookieAuthenticationFilter(), UserNamePasswordAuthFilter.class)
+                .addFilterBefore(authenticationFilter(), BasicAuthenticationFilter.class)
+                .addFilterBefore(new CookieAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .logout().deleteCookies(CookieAuthenticationFilter.COOKIE_NAME)
                 .and()
                 .authorizeRequests()
-                .anyRequest().anonymous();
+                .anyRequest().permitAll();
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(authenticationProvider);
+    }
+
+    private UsernamePasswordAuthenticationFilter authenticationFilter() throws Exception {
+        var filter = new UsernamePasswordAuthenticationFilter(authenticationManagerBean());
+        filter.setFilterProcessesUrl(LOGIN_URL);
+        filter.setAuthenticationSuccessHandler(successHandler());
+        return filter;
+    }
+
+    @Bean
+    public CookieAuthenticationSuccessHandler successHandler() {
+        return new CookieAuthenticationSuccessHandler(userService());
+    }
+
+    @Bean
+    public AuthService userService() {
+        return getApplicationContext().getBean(AuthService.class);
     }
 }

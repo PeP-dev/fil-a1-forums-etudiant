@@ -1,7 +1,7 @@
 package org.filmt.projetagile.config;
 
 import lombok.AllArgsConstructor;
-import org.filmt.projetagile.auth.service.UserService;
+import org.filmt.projetagile.auth.service.AuthService;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,16 +18,16 @@ import java.util.Collections;
 @AllArgsConstructor
 public class UserAuthProvider implements AuthenticationProvider {
 
-    private final UserService userService;
+    private final AuthService authService;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         UserDetails user = null;
         if (authentication instanceof UsernamePasswordAuthenticationToken) {
-            user = userService.login((String) authentication.getPrincipal(), (String) authentication.getCredentials());
+            user = authService.login((String) authentication.getPrincipal(), (String) authentication.getCredentials());
 
         } else if (authentication instanceof PreAuthenticatedAuthenticationToken) {
-            user = userService.loginWithToken((String) authentication.getPrincipal());
+            user = authService.loginWithToken((String) authentication.getPrincipal());
         }
         if (user == null) {
             return null;
