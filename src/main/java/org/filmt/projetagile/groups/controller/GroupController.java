@@ -1,3 +1,46 @@
 package org.filmt.projetagile.groups.controller;
 
-public class GroupController {}
+import java.util.List;
+
+import org.filmt.projetagile.groups.model.Group;
+import org.filmt.projetagile.groups.service.GroupService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@RequestMapping("/api/groups")
+public class GroupController {
+
+    GroupService groupService;
+
+    @DeleteMapping("/{groupId}")
+    public ResponseEntity<Void> deleteGroup(String groupId) {
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<Group> createGroup(@RequestBody Group group) {
+        return ResponseEntity.ok(groupService.createGroup(group));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Group> getGroupById(@PathVariable final String id) {
+        return ResponseEntity.ok(groupService.getGroupById(id));
+    }
+
+    @GetMapping(value = "/", params = "schoolId")
+    public ResponseEntity<List<Group>> getGroupBySchoolId(@RequestParam final String schoolId) {
+        return ResponseEntity.ok(groupService.getGroupBySchoolId(schoolId));
+    }
+
+    @PutMapping("/")
+    public ResponseEntity<Group> update(@RequestBody final Group group) {
+        return ResponseEntity.ok(groupService.update(group));
+    }
+}
