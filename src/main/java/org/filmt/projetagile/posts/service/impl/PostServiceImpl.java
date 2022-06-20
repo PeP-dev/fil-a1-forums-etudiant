@@ -64,7 +64,6 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void delete(final String id) {
-
         postDao.delete(id);
     }
 }

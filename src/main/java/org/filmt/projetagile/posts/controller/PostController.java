@@ -1,6 +1,7 @@
 package org.filmt.projetagile.posts.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.filmt.projetagile.exception.GroupNotFoundException;
 import org.filmt.projetagile.posts.dao.impl.PostDAOSQL;
@@ -38,6 +39,8 @@ public class PostController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public Post create(@RequestBody Post post) {
+        UUID id = UUID.randomUUID();
+        post.setId(id.toString());
         return postService.create(post);
     }
 

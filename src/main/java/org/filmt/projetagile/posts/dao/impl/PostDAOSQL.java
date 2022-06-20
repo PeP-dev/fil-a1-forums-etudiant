@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class PostDAOSQL extends ReddImtDAOSQL implements PostDAO {
-    private static final String SELECT_POST = "SELECT ID, ID_GROUP, TITLE, POST_CONTENT, ID_CATEGORY FROM REDDIMT_POST";
+    private static final String SELECT_POST = "SELECT ID, ID_GROUP, TITLE, POST_CONTENT, ID_CATEGORY, USER_NAME FROM REDDIMT_POST";
 
     private static final String GROUP_ID_CONDITION = " WHERE ID_GROUP = :groupId";
 

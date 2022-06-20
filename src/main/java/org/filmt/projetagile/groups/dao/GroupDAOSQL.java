@@ -16,9 +16,9 @@ public class GroupDAOSQL extends ReddImtDAOSQL implements GroupDAO {
 
     private static final String SELECT_GROUP = "SELECT ID, ID_ECOLE, LIBELLE, DESCRIPTION FROM REDDIMT_GROUP";
 
-    private static final String GROUP_ID_CONDITION = " WHERE ID = :groupId";
+    private static final String GROUP_ID_CONDITION = "WHERE ID = :groupId";
 
-    private static final String SCHOOL_ID_CONDITION = " WHERE ID_SCHOOL = :schoolId";
+    private static final String SCHOOL_ID_CONDITION = "WHERE ID_SCHOOL = :schoolId";
 
     private static final String INSERT_GROUP = "INSERT INTO REDDIMT_GROUP VALUES(:id, :schoolId, :label, :description)";
 
