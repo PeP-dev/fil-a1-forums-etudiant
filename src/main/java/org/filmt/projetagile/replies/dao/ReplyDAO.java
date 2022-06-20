@@ -16,4 +16,6 @@ public interface ReplyDAO {
 
     List<Reply> getRepliesByPostId(String postId);
 
+    List<Reply> getCommentsByReplyId(String replyId);
+
 }

@@ -14,6 +14,9 @@ public interface ReplyService {
 
     void delete(String id);
 
-    List<Reply> getRepliesByPostId(String replyId);
+    List<Reply> getRepliesByPostId(String postId);
+
+    List<Reply> getCommentsByReplyId(String replyId);
+
 
 }

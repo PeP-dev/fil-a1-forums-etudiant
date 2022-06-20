@@ -19,7 +19,7 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     public Reply getReplyById(String replyId) {
-        return null;
+        return replyDao.getReplyById(replyId);
     }
 
     @Override
@@ -42,7 +42,14 @@ public class ReplyServiceImpl implements ReplyService {
     }
 
     @Override
-    public List<Reply> getRepliesByPostId(String replyId) {
-        return null;
+    public List<Reply> getRepliesByPostId(String postId) {
+        return replyDao.getRepliesByPostId(postId);
     }
+
+    @Override
+    public List<Reply> getCommentsByReplyId(String replyId) {
+        return replyDao.getCommentsByReplyId(replyId);
+    }
+
+
 }

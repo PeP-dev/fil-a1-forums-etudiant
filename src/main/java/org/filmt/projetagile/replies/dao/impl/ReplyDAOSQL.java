@@ -14,23 +14,23 @@ import java.util.List;
 @Repository
 public class ReplyDAOSQL extends ReddImtDAOSQL implements ReplyDAO {
 
-    private static final String SELECT_REPLY = "SELECT ID, ID_POST, ID_REPLY, CONTENT FROM REDDIMT_REPLY";
+    private static final String SELECT_REPLY = "SELECT reddimt_reply.ID, reddimt_reply.ID_POST, reddimt_reply.ID_REPLY, reddimt_reply.CONTENT FROM REDDIMT_REPLY";
 
-    private static final String POST_ID_CONDITION = "WHERE ID_POST = :postId";
+    private static final String POST_ID_CONDITION = " WHERE ID_POST = :postId";
 
-    private static final String REPLY_OF_REPLY_ID_CONDITION = "WHERE ID_REPLY = :replyId";
+    private static final String REPLY_OF_REPLY_ID_CONDITION = " WHERE ID_REPLY = :replyId";
 
-    private static final String INNER_JOIN_ON_POST_REPLY = "INNER JOIN reddimt_reply ON reddimt_post.id = reddimt_reply.id_post";
+    private static final String INNER_JOIN_ON_POST_REPLY = " INNER JOIN reddimt_post ON reddimt_post.id = reddimt_reply.id_post";
 
-    private static final String REPLY_ID_CONDITION = "WHERE ID = :replyId";
+    private static final String REPLY_ID_CONDITION = " WHERE ID = :replyId";
 
-    private static final String REPLY_ID_NULL = "AND ID_REPLY is null";
+    private static final String REPLY_ID_NULL = " AND ID_REPLY is null";
 
-    private static final String INSERT_REPLY = "INSERT INTO REDDIMT_REPLY VALUES(:id, :postId, :replyId, :content)";
+    private static final String INSERT_REPLY = " INSERT INTO REDDIMT_REPLY VALUES(:id, :postId, :replyId, :content)";
 
-    private static final String UPDATE_REPLY = "UPDATE REDDIMT_REPLY SET ID=: id, ID_POST=:postId, ID_REPLY=:replyId, CONTENT=:content";
+    private static final String UPDATE_REPLY = " UPDATE REDDIMT_REPLY SET ID=: id, ID_POST=:postId, ID_REPLY=:replyId, CONTENT=:content";
 
-    private static final String DELETE_REPLY = "DELETE FROM REDDIMT_REPLY";
+    private static final String DELETE_REPLY = " DELETE FROM REDDIMT_REPLY";
 
     private static final RowMapper<Reply> REPLY_MAPPER = (rs, ri)-> new Reply(
             rs.getString("ID"),
@@ -81,6 +81,12 @@ public class ReplyDAOSQL extends ReddImtDAOSQL implements ReplyDAO {
     public List<Reply> getRepliesByPostId(String postId) {
         SqlParameterSource source = new MapSqlParameterSource("postId", postId);
         return getJdbcTemplate().query(SELECT_REPLY+INNER_JOIN_ON_POST_REPLY+POST_ID_CONDITION+ REPLY_ID_NULL, source, REPLY_MAPPER);
+    }
+
+    @Override
+    public List<Reply> getCommentsByReplyId(String replyId) {
+        SqlParameterSource source = new MapSqlParameterSource("replyId", replyId);
+        return getJdbcTemplate().query(SELECT_REPLY+ REPLY_OF_REPLY_ID_CONDITION, source, REPLY_MAPPER);
     }
 
 
