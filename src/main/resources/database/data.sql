@@ -56,20 +56,20 @@ INSERT INTO reddimt_reply (id, id_post, id_reply, content)
 
 INSERT INTO reddimt_like_post (user_name, id_post)
     VALUES 
-    ('valeur 1', 'valeur 2', ...),
-    ('valeur 1', 'valeur 2', ...);
+    ('valeur 1', 'valeur 2'),
+    ('valeur 1', 'valeur 2');
 
 
 INSERT INTO reddimt_like_reply (user_name, id_reply)
     VALUES 
-    ('valeur 1', 'valeur 2', ...),
-    ('valeur 1', 'valeur 2', ...);
+    ('valeur 1', 'valeur 2'),
+    ('valeur 1', 'valeur 2');
 
 
 INSERT INTO reddimt_cir_category_post (id_group, id_post)
     VALUES 
-    ('valeur 1', 'valeur 2', ...),
-    ('valeur 1', 'valeur 2', ...);
+    ('valeur 1', 'valeur 2'),
+    ('valeur 1', 'valeur 2');
 
 
 
