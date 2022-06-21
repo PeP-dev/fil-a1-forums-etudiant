@@ -30,7 +30,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public List<Post> getPostsByGroupId(final String groupId) {
         if (postDao.getPostsByGroupId(groupId).isEmpty()) {
-            throw new GroupNotFoundException("Group not found");
+            throw GroupNotFoundException.genericById(groupId);
         }
         return postDao.getPostsByGroupId(groupId);
     }

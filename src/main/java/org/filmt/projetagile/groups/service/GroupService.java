@@ -1,6 +1,7 @@
 package org.filmt.projetagile.groups.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.filmt.projetagile.groups.model.Group;
 
@@ -8,7 +9,7 @@ public interface GroupService {
 
     Group createGroup(Group group);
 
-    Group getGroupById(String id);
+    Optional<Group> getGroupById(String id);
 
     List<Group> getGroupBySchoolId(String schoolId);
 

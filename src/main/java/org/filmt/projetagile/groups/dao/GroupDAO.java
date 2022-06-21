@@ -3,10 +3,11 @@ package org.filmt.projetagile.groups.dao;
 import org.filmt.projetagile.groups.model.Group;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GroupDAO {
 
-    Group getGroupById(String postId);
+    Optional<Group> getGroupById(String groupId);
 
     List<Group> getGroupBySchoolId(String schoolID);
 

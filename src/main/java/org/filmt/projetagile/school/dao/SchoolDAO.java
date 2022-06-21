@@ -1,15 +1,17 @@
 package org.filmt.projetagile.school.dao;
 
-import org.filmt.projetagile.groups.model.Group;
-import org.filmt.projetagile.school.model.School;
-
 import java.util.List;
+import java.util.Optional;
+
+import org.filmt.projetagile.school.model.School;
 
 public interface SchoolDAO {
 
-    School getSchoolById(String schoolId);
+    Optional<School> getSchoolById(String schoolId);
 
-    List<Group> getSchoolByTypeId(String typeId);
+    List<School> getSchoolByTypeId(String typeId);
+
+    List<School> getAll();
 
     School getSchoolByLibelle(String libelle);
 
