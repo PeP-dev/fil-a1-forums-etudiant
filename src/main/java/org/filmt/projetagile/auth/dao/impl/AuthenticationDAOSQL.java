@@ -46,7 +46,7 @@ public class AuthenticationDAOSQL extends ReddImtDAOSQL implements Authenticatio
     @Override
     public Optional<UserModel> loadByUsername(String userName) {
         SqlParameterSource source = new MapSqlParameterSource("userName", userName);
-        return Optional.ofNullable(getJdbcTemplate().queryForObject(SELECT_USER+WHERE_USERNAME, source, ROW_MAPPER));
+        return queryOptional(SELECT_USER+WHERE_USERNAME, source, ROW_MAPPER);
     }
 
     @Override

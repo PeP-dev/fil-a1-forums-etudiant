@@ -16,12 +16,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 
 import static org.filmt.projetagile.school.controller.SchoolController.SCHOOL_ENDPOINT_URI;
 
-@Controller
+@RestController
 @RequestMapping(SCHOOL_ENDPOINT_URI)
 @AllArgsConstructor
 public class SchoolController {
