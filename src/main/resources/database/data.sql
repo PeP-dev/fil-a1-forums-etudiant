@@ -38,8 +38,8 @@ INSERT INTO reddimt_category (id, id_group, libelle, description)
     ('1', '1', 'Administration', 'ceci est la catégorie formation'),
     ('2', '1', 'Informations Generale', 'ceci est la catégorie info g'),
     ('3', '1', 'Autres', 'ceci est la catégorie autres'),
-    ('3', '2', 'Autres', 'ceci est la catégorie autres'),
-    ('3', '3', 'Sport', 'ceci est la catégorie Sport');
+    ('4', '2', 'Autres', 'ceci est la catégorie autres'),
+    ('5', '3', 'Sport', 'ceci est la catégorie Sport');
 
 
 INSERT INTO reddimt_post (id, id_group, title, post_content, id_category, user_name)
