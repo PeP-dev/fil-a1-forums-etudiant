@@ -8,6 +8,7 @@ import org.filmt.projetagile.posts.model.Post;
 public interface PostService {
 
     Optional<Post> getPostById(String postId);
+
     List<Post> getPostsByGroupId(String groupId);
 
     List<Post> getPostByCategory(String groupId, String categoryId);
@@ -16,9 +17,13 @@ public interface PostService {
 
     List<Post> getPostsByGroupIdAndTitle(String groupId, String title);
 
+    List<Post> getPostsByUserId(String userId);
+
     Post create(Post post);
 
     Post update(Post post);
 
     void delete(String id);
+
+
 }
