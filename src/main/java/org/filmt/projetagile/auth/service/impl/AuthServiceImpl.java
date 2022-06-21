@@ -8,6 +8,7 @@ import org.filmt.projetagile.auth.service.AuthService;
 import org.filmt.projetagile.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -37,7 +38,7 @@ public class AuthServiceImpl implements AuthService {
         this.passwordEncoder = passwordEncoder;
     }
     @Override
-    public UserDetails loadUserByUsername(final String username) throws UserNotFoundException {
+    public UserDetails loadUserByUsername(final String username) {
         return authenticationDAO.loadByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("Couldn't find user with matching username : '%s'", username)));
     }
 
@@ -45,7 +46,7 @@ public class AuthServiceImpl implements AuthService {
     public UserDetails login(final String userName, String password) {
         UserDetails details = loadUserByUsername(userName);
         if (!passwordEncoder.matches(password, details.getPassword())) {
-            throw new UserNotFoundException(String.format("couldn't login with credentials {userName : '%s'; password : '%s'", userName, password));
+            throw new BadCredentialsException("Invalid credentials");
         }
         return details;
     }
