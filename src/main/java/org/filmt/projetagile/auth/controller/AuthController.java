@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.filmt.projetagile.auth.model.LoginCredentials;
 import org.filmt.projetagile.auth.service.AuthService;
 import org.filmt.projetagile.config.CookieAuthenticationFilter;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,7 +31,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<Void> register(@RequestBody LoginCredentials user) {
         userService.registerUser(user);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PostMapping("/login")
