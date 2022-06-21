@@ -1,16 +1,19 @@
 package org.filmt.projetagile.posts.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-import org.filmt.projetagile.exception.NotFoundException;
+import org.filmt.projetagile.exception.GroupNotFoundException;
 import org.filmt.projetagile.posts.dao.PostDAO;
 import org.filmt.projetagile.posts.model.Post;
 import org.filmt.projetagile.posts.service.PostService;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.web.server.ResponseStatusException;
 
 @Primary
 @Service
@@ -20,14 +23,14 @@ public class PostServiceImpl implements PostService {
     private final PostDAO postDao;
 
     @Override
-    public Post getPostById(final String postId) {
-        return null;
+    public Optional<Post> getPostById(final String postId) {
+        return Optional.empty();
     }
 
     @Override
     public List<Post> getPostsByGroupId(final String groupId) {
         if (postDao.getPostsByGroupId(groupId).isEmpty()) {
-            throw new NotFoundException("Group not found");
+            throw GroupNotFoundException.genericById(groupId);
         }
         return postDao.getPostsByGroupId(groupId);
     }
@@ -48,11 +51,6 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getPostsByUserId(String userId) {
-        return postDao.getPostsByUserId(userId);
-    }
-
-    @Override
     public Post create(final Post post) {
         UUID id = UUID.randomUUID();
         post.setId(id.toString());
@@ -67,6 +65,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void delete(final String id) {
+
         postDao.delete(id);
     }
 }

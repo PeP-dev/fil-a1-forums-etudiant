@@ -1,13 +1,13 @@
 package org.filmt.projetagile.posts.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.filmt.projetagile.posts.model.Post;
 
 public interface PostService {
 
-    Post getPostById(String postId);
-
+    Optional<Post> getPostById(String postId);
     List<Post> getPostsByGroupId(String groupId);
 
     List<Post> getPostByCategory(String groupId, String categoryId);
@@ -15,8 +15,6 @@ public interface PostService {
     List<Post> getPostsBySchoolIdAndTitle(String schoolId, String title);
 
     List<Post> getPostsByGroupIdAndTitle(String groupId, String title);
-
-    List<Post> getPostsByUserId(String userId);
 
     Post create(Post post);
 

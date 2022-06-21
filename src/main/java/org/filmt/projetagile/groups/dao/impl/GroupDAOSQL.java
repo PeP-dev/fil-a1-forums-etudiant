@@ -1,4 +1,4 @@
-package org.filmt.projetagile.groups.dao;
+package org.filmt.projetagile.groups.dao.impl;
 
 import org.filmt.projetagile.common.ReddImtDAOSQL;
 import org.filmt.projetagile.groups.dao.GroupDAO;
@@ -9,27 +9,30 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
+@Component
 public class GroupDAOSQL extends ReddImtDAOSQL implements GroupDAO {
 
     private static final String SELECT_GROUP = "SELECT ID, ID_ECOLE, LIBELLE, DESCRIPTION FROM REDDIMT_GROUP";
 
-    private static final String GROUP_ID_CONDITION = "WHERE ID = :groupId";
+    private static final String GROUP_ID_CONDITION = " WHERE ID = :groupId";
 
-    private static final String SCHOOL_ID_CONDITION = "WHERE ID_SCHOOL = :schoolId";
+    private static final String SCHOOL_ID_CONDITION = " WHERE ID_ECOLE = :schoolId";
 
     private static final String INSERT_GROUP = "INSERT INTO REDDIMT_GROUP VALUES(:id, :schoolId, :label, :description)";
 
-    private static final String UPDATE_GROUP = "UPDATE REDDIMT_GROUP SET ID=: id, ID_ECOLE=:schoolId, LIBELLE=:libelle, DESCRIPTION=:description";
+    private static final String UPDATE_GROUP = "UPDATE REDDIMT_GROUP SET ID= :id, ID_ECOLE=:schoolId, LIBELLE=:libelle, DESCRIPTION=:description";
 
     private static final String DELETE_GROUP = "DELETE FROM REDDIMT_GROUP";
 
-    private static final RowMapper<Group> Group_MAPPER = (rs, ri)-> new Group(
+    private static final RowMapper<Group> GROUP_MAPPER = (rs, ri)-> new Group(
             rs.getString("ID"),
-            rs.getString("ID_SCHOOL"),
-            rs.getString("LABEL"),
+            rs.getString("ID_ECOLE"),
+            rs.getString("LIBELLE"),
             rs.getString("DESCRIPTION"));
 
     public GroupDAOSQL(NamedParameterJdbcTemplate template) {
@@ -37,14 +40,15 @@ public class GroupDAOSQL extends ReddImtDAOSQL implements GroupDAO {
     }
 
     @Override
-    public Group getGroupById(String postId) {
-        return null;
+    public Optional<Group> getGroupById(String groupId) {
+        SqlParameterSource source = new MapSqlParameterSource("groupId", groupId);
+        return queryOptional(SELECT_GROUP+GROUP_ID_CONDITION, source, GROUP_MAPPER);
     }
 
     @Override
     public List<Group> getGroupBySchoolId(String schoolID) {
         SqlParameterSource source = new MapSqlParameterSource("schoolId", schoolID);
-        return getJdbcTemplate().query(SELECT_GROUP+SCHOOL_ID_CONDITION, source, Group_MAPPER);
+        return getJdbcTemplate().query(SELECT_GROUP+SCHOOL_ID_CONDITION, source, GROUP_MAPPER);
     }
 
     @Override
@@ -54,20 +58,22 @@ public class GroupDAOSQL extends ReddImtDAOSQL implements GroupDAO {
         source.addValue("label", group.getLabel());
         source.addValue("description", group.getDescription());
         source.addValue("schoolId", group.getSchoolId());
+        source.addValue("id", group.getId());
         getJdbcTemplate().update(INSERT_GROUP, source, keyHolder);
-        return new Group(keyHolder.getKeyAs(String.class), group.getSchoolId(), group.getLabel(), group.getDescription());
-
+        return group;
     }
 
     @Override
     public Group update(Group group) {
         var source = new MapSqlParameterSource();
-        source.addValue("label", group.getLabel());
+        source.addValue("libelle", group.getLabel());
         source.addValue("description", group.getDescription());
         source.addValue("schoolId", group.getSchoolId());
+        source.addValue("id", group.getId());
+        source.addValue("groupId", group.getId());
         getJdbcTemplate().update(UPDATE_GROUP+GROUP_ID_CONDITION, source);
 
-        return getGroupById(group.getId());
+        return group;
     }
 
     @Override

@@ -38,7 +38,7 @@ public class Post {
     private String categoryId;
 
     /**
-     * Utilisateur qui a poste
+     * Identifiant du publicateur
      */
     private String userName;
 }
