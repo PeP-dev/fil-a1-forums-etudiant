@@ -15,6 +15,8 @@ public interface PostDAO {
 
     List<Post> getPostsByGroupIdAndTitle(String groupId, String title);
 
+    List<Post> getPostsByUserId(String userId);
+
     void create(Post post);
 
     Post update(Post post);

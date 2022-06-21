@@ -20,6 +20,8 @@ public class PostDAOSQL extends ReddImtDAOSQL implements PostDAO {
 
     private static final String POST_ID_CONDITION = " WHERE ID = :postId";
 
+    private static final String USER_NAME_CONDITION = " WHERE USER_NAME = :userName";
+
     private static final String CATEGORY_CONDITION = " WHERE ID_CATEGORY =:categoryId";
 
     private static final String INSERT_POST = "INSERT INTO REDDIMT_POST VALUES(:id, :groupId, :title, :content, :categoryId, :userName)";
@@ -64,6 +66,12 @@ public class PostDAOSQL extends ReddImtDAOSQL implements PostDAO {
     @Override
     public List<Post> getPostsByGroupIdAndTitle(final String groupId, final String title) {
         return Collections.emptyList();
+    }
+
+    @Override
+    public List<Post> getPostsByUserId(String userId) {
+        SqlParameterSource source = new MapSqlParameterSource("userName", userId);
+        return getJdbcTemplate().query(SELECT_POST+USER_NAME_CONDITION, source, POST_MAPPER);
     }
 
     @Override

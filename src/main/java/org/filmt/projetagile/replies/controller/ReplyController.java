@@ -1,14 +1,12 @@
 package org.filmt.projetagile.replies.controller;
 
 import lombok.AllArgsConstructor;
-import org.filmt.projetagile.posts.model.Post;
-import org.filmt.projetagile.posts.service.impl.PostServiceImpl;
+import org.filmt.projetagile.exception.NotFoundException;
 import org.filmt.projetagile.replies.model.Reply;
 import org.filmt.projetagile.replies.service.impl.ReplyServiceImpl;
 import org.springframework.http.HttpStatus;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -27,12 +25,34 @@ public class ReplyController {
 
     @GetMapping(value = "/{postId}")
     public List<Reply> getRepliesByPostId(@PathVariable String postId) {
-        return replyService.getRepliesByPostId(postId);
+        try {
+            return replyService.getRepliesByPostId(postId);
+        } catch (NotFoundException ex) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Post Not Found", ex);
+        }
     }
 
     @GetMapping(value = "/comments/{replyId}")
     public List<Reply> getCommentsByReplyId(@PathVariable String replyId) {
-        return replyService.getCommentsByReplyId(replyId);
+        try {
+            return replyService.getCommentsByReplyId(replyId);
+        } catch (NotFoundException ex) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Comments for this reply not found", ex);
+        }
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping
+    public Reply update(@RequestBody Reply reply) {
+        return replyService.update(reply);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{replyId}")
+    public void delete(@PathVariable String replyId) {
+        replyService.delete(replyId);
     }
 
 }

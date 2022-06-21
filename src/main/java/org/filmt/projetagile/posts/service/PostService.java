@@ -16,6 +16,8 @@ public interface PostService {
 
     List<Post> getPostsByGroupIdAndTitle(String groupId, String title);
 
+    List<Post> getPostsByUserId(String userId);
+
     Post create(Post post);
 
     Post update(Post post);

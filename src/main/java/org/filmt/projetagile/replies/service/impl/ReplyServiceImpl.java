@@ -1,6 +1,7 @@
 package org.filmt.projetagile.replies.service.impl;
 
 import lombok.AllArgsConstructor;
+import org.filmt.projetagile.exception.NotFoundException;
 import org.filmt.projetagile.replies.dao.ReplyDAO;
 import org.filmt.projetagile.replies.model.Reply;
 import org.filmt.projetagile.replies.service.ReplyService;
@@ -43,11 +44,17 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     public List<Reply> getRepliesByPostId(String postId) {
+        if (replyDao.getRepliesByPostId(postId).isEmpty()) {
+            throw new NotFoundException("Post not found");
+        }
         return replyDao.getRepliesByPostId(postId);
     }
 
     @Override
     public List<Reply> getCommentsByReplyId(String replyId) {
+        if (replyDao.getCommentsByReplyId(replyId).isEmpty()) {
+            throw new NotFoundException("Reply not found");
+        }
         return replyDao.getCommentsByReplyId(replyId);
     }
 
