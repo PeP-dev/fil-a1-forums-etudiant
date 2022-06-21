@@ -14,11 +14,13 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class PostDAOSQL extends ReddImtDAOSQL implements PostDAO {
-    private static final String SELECT_POST = "SELECT ID, ID_GROUP, TITLE, POST_CONTENT, ID_CATEGORY FROM REDDIMT_POST";
+    private static final String SELECT_POST = "SELECT ID, ID_GROUP, TITLE, POST_CONTENT, ID_CATEGORY, USER_NAME FROM REDDIMT_POST";
 
     private static final String GROUP_ID_CONDITION = " WHERE ID_GROUP = :groupId";
 
     private static final String POST_ID_CONDITION = " WHERE ID = :postId";
+
+    private static final String USER_NAME_CONDITION = " WHERE USER_NAME = :userName";
 
     private static final String CATEGORY_CONDITION = " WHERE ID_CATEGORY =:categoryId";
 
@@ -64,6 +66,12 @@ public class PostDAOSQL extends ReddImtDAOSQL implements PostDAO {
     @Override
     public List<Post> getPostsByGroupIdAndTitle(final String groupId, final String title) {
         return Collections.emptyList();
+    }
+
+    @Override
+    public List<Post> getPostsByUserId(String userId) {
+        SqlParameterSource source = new MapSqlParameterSource("userName", userId);
+        return getJdbcTemplate().query(SELECT_POST+USER_NAME_CONDITION, source, POST_MAPPER);
     }
 
     @Override

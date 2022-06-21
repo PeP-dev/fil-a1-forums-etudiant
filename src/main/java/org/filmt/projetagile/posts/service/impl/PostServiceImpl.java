@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.filmt.projetagile.exception.CategoryNotFoundException;
 import org.filmt.projetagile.exception.GroupNotFoundException;
+import org.filmt.projetagile.exception.UserNotFoundException;
 import org.filmt.projetagile.posts.dao.PostDAO;
 import org.filmt.projetagile.posts.model.Post;
 import org.filmt.projetagile.posts.service.PostService;
@@ -37,6 +39,9 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> getPostByCategory(final String groupId, final String categoryId) {
+        if (postDao.getPostByCategory(groupId, categoryId).isEmpty()) {
+            throw CategoryNotFoundException.genericById(groupId);
+        }
         return postDao.getPostByCategory(groupId, categoryId);
     }
 
@@ -51,9 +56,16 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<Post> getPostsByUserId(String userId)  {
+        if (postDao.getPostsByUserId(userId).isEmpty()) {
+            throw new UserNotFoundException("Cannot find user") ;
+        }
+        return postDao.getPostsByUserId(userId) ;
+    }
+
+    @Override
     public Post create(final Post post) {
-        UUID id = UUID.randomUUID();
-        post.setId(id.toString());
+        post.setId(UUID.randomUUID().toString());
         postDao.create(post);
         return post ;
     }
@@ -65,7 +77,6 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void delete(final String id) {
-
         postDao.delete(id);
     }
 }
