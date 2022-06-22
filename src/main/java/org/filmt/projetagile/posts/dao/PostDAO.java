@@ -1,11 +1,12 @@
 package org.filmt.projetagile.posts.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.filmt.projetagile.posts.model.Post;
 
 public interface PostDAO {
-    Post getPostById(String postId);
+    Optional<Post> getPostById(String postId);
 
     List<Post> getPostsByGroupId(String groupId);
 

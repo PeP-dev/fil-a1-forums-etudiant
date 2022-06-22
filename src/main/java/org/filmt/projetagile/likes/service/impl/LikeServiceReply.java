@@ -1,21 +1,19 @@
 package org.filmt.projetagile.likes.service.impl;
 
-import org.filmt.projetagile.exception.PostNotFoundException;
 import org.filmt.projetagile.exception.PublicException;
+import org.filmt.projetagile.exception.ReplyNotFoundException;
 import org.filmt.projetagile.likes.dao.LikeDAO;
 import org.filmt.projetagile.likes.service.LikeService;
-import org.filmt.projetagile.posts.model.Post;
 import org.filmt.projetagile.posts.service.PostService;
+import org.filmt.projetagile.replies.model.Reply;
 import org.springframework.stereotype.Service;
 
-import lombok.AllArgsConstructor;
-
 @Service
-public class LikeServicePost extends LikeService<Post> {
+public class LikeServiceReply extends LikeService<Reply> {
 
     PostService postService;
 
-    public LikeServicePost(final LikeDAO<Post> likeDao, final PostService postService) {
+    public LikeServiceReply(final LikeDAO<Reply> likeDao, final PostService postService) {
         super(likeDao);
         this.postService = postService;
     }
@@ -23,7 +21,7 @@ public class LikeServicePost extends LikeService<Post> {
     @Override
     protected void throwIfMissingContent(final String contentId) throws PublicException {
         if (postService.getPostById(contentId).isEmpty()) {
-            throw new PostNotFoundException(String.format("Couldn't find a post with matching identifier '%s'", contentId));
+            throw new ReplyNotFoundException(String.format("Couldn't find a post with matching identifier '%s'", contentId));
         }
     }
 }

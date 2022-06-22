@@ -15,21 +15,37 @@ public class LikeDAOSQLPost extends LikeDAOSQL<Post> {
 
     @Override
     public String getDaoTableName() {
-        return "LIKE_POST";
+        return "REDDIMT_LIKE_POST";
+    }
+
+    @Override
+    public String getContentTableName() {
+        return "REDDIMT_POST";
+    }
+
+    @Override
+    public String getContentPk() {
+        return "ID";
     }
 
     @Override
     public String getContentColumnName() {
-        return "POST_ID";
+        return "ID_POST";
     }
 
     @Override
     public String getUserColumnName() {
-        return "USER_ID";
+        return "USER_NAME";
     }
 
     @Override
-    protected RowMapper<Post> getRowMapper() {
-        return null;
+    protected RowMapper<Post> getContentRowMapper() {
+        return ((rs, rowNum) -> new Post(rs.getString("id"),
+            rs.getString("id_group"),
+            rs.getString("title"),
+            rs.getString("post_content"),
+            rs.getString("id_category"),
+            rs.getString("user_name"),
+            rs.getTimestamp("CREATED_AT")));
     }
 }

@@ -11,12 +11,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class UserModel implements UserDetails {
+
     private String email = Strings.EMPTY;
 
     private String avatarUrl = Strings.EMPTY;
@@ -29,6 +31,10 @@ public class UserModel implements UserDetails {
 
     @JsonIgnore
     private User user = null;
+
+    public UserModel() {
+    }
+
     public UserModel(final String username, final String password) {
         this.user = new User(username, password, Collections.emptyList());
     }
@@ -39,6 +45,16 @@ public class UserModel implements UserDetails {
         this.note = note;
         this.pseudo = pseudo;
         this.isGlobalAdmin = isGlobalAdmin;
+    }
+
+    @Builder
+    public UserModel(final boolean isGlobalAdmin, final String username, final String email, final String note, final String pseudo, final String avatarUrl) {
+        this.user = new User(username, "", Collections.emptyList());
+        this.email = email;
+        this.note = note;
+        this.pseudo = pseudo;
+        this.isGlobalAdmin = isGlobalAdmin;
+        this.avatarUrl = avatarUrl;
     }
 
     public UserModel(final String username, final String password, final Collection<? extends GrantedAuthority> authorities) {
@@ -67,7 +83,7 @@ public class UserModel implements UserDetails {
     }
 
     @JsonIgnore
-    @JsonProperty("expired")
+    @JsonProperty("non_expired")
     @Override
     public boolean isAccountNonExpired() {
         return this.user.isAccountNonExpired();

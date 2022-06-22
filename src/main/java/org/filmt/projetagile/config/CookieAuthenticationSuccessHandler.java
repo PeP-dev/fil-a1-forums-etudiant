@@ -32,7 +32,7 @@ public class CookieAuthenticationSuccessHandler implements AuthenticationSuccess
 
     @Override
     public void onAuthenticationSuccess(final HttpServletRequest request, final HttpServletResponse response, final Authentication authentication) throws IOException, ServletException {
-        createCookie(authentication, response);
+            createCookie(authentication, response);
     }
 
     private void createCookie(Authentication auth, HttpServletResponse response) {
