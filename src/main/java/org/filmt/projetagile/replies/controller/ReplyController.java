@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @AllArgsConstructor
@@ -23,12 +24,17 @@ public class ReplyController {
         return ResponseEntity.ok(replyService.create(reply));
     }
 
-    @GetMapping(value = "/{postId}")
-    public ResponseEntity<List<Reply>> getRepliesByPostId(@PathVariable String postId) {
+    @GetMapping(value = "/{replyId}")
+    public ResponseEntity<Optional<Reply>> getReplyById(@PathVariable String replyId) {
+        return ResponseEntity.ok(replyService.getReplyById(replyId));
+    }
+
+    @GetMapping(value = "",params = "postId" )
+    public ResponseEntity<List<Reply>> getRepliesByPostId(@RequestParam final String postId) {
         return ResponseEntity.ok(replyService.getRepliesByPostId(postId));
     }
 
-    @GetMapping(value = "/comments/{replyId}")
+    @GetMapping(value = "/{replyId}/comments")
     public ResponseEntity<List<Reply>> getCommentsByReplyId(@PathVariable String replyId) {
         return ResponseEntity.ok(replyService.getCommentsByReplyId(replyId));
     }
@@ -45,5 +51,7 @@ public class ReplyController {
         replyService.delete(replyId);
         return ResponseEntity.noContent().build();
     }
+
+
 
 }

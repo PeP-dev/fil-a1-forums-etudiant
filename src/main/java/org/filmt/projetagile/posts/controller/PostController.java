@@ -27,6 +27,11 @@ public class PostController {
         return ResponseEntity.ok(postService.getPostById(postId).orElseThrow(()-> PostNotFoundException.genericById(postId)));
     }
 
+    @GetMapping(value = "", params = "groupId")
+    public ResponseEntity<List<Post>> getPostByGroupId(@RequestParam String groupId) {
+        return ResponseEntity.ok(postService.getPostsByGroupId(groupId));
+    }
+
     @GetMapping(value = "/{groupId}", params = "categoryId")
     public ResponseEntity<List<Post>> getPostsByCategory(@PathVariable String groupId, @RequestParam String categoryId) {
         return ResponseEntity.ok(postService.getPostByCategory(groupId, categoryId));
