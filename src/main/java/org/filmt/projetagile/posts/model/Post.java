@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
 /**
  * Classe représentant une publication dans un groupe
  */
@@ -41,4 +43,9 @@ public class Post {
      * Identifiant du publicateur
      */
     private String userName;
+
+    /**
+     * Date de création post
+     */
+    private Timestamp createdAt;
 }

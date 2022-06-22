@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public class ReplyDAOSQL extends ReddImtDAOSQL implements ReplyDAO {
 
-    private static final String SELECT_REPLY = "SELECT reddimt_reply.ID, reddimt_reply.ID_POST, reddimt_reply.ID_REPLY, reddimt_reply.CONTENT FROM REDDIMT_REPLY";
+    private static final String SELECT_REPLY = "SELECT reddimt_reply.ID, reddimt_reply.ID_POST, reddimt_reply.ID_REPLY, reddimt_reply.CONTENT, reddimt_reply.CREATED_AT, reddimt_reply.USER_NAME  FROM REDDIMT_REPLY";
 
     private static final String POST_ID_CONDITION = " WHERE ID_POST = :postId";
 
@@ -36,7 +36,9 @@ public class ReplyDAOSQL extends ReddImtDAOSQL implements ReplyDAO {
             rs.getString("ID"),
             rs.getString("ID_POST"),
             rs.getString("ID_REPLY"),
-            rs.getString("CONTENT"));
+            rs.getString("CONTENT"),
+            rs.getString("USER_NAME"),
+            rs.getTimestamp("CREATED_AT"));
 
     public ReplyDAOSQL(NamedParameterJdbcTemplate template) {
         super(template);
@@ -55,6 +57,8 @@ public class ReplyDAOSQL extends ReddImtDAOSQL implements ReplyDAO {
         source.addValue("postId", reply.getPostId());
         source.addValue("replyId", reply.getReplyId());
         source.addValue("content", reply.getContent());
+        source.addValue("userName", reply.getUserName());
+        source.addValue("createdAt", reply.getCreatedAt());
         getJdbcTemplate().update(INSERT_REPLY, source);
     }
 
@@ -65,6 +69,8 @@ public class ReplyDAOSQL extends ReddImtDAOSQL implements ReplyDAO {
         source.addValue("postId", reply.getPostId());
         source.addValue("replyId", reply.getReplyId());
         source.addValue("content", reply.getContent());
+        source.addValue("userName", reply.getUserName());
+        source.addValue("createdAt", reply.getCreatedAt());
         getJdbcTemplate().update(UPDATE_REPLY+REPLY_ID_CONDITION, source);
 
         return getReplyById(reply.getId());

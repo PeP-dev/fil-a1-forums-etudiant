@@ -9,6 +9,7 @@ import org.filmt.projetagile.replies.service.ReplyService;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,8 +27,8 @@ public class ReplyServiceImpl implements ReplyService {
 
     @Override
     public Reply create(Reply reply) {
-        UUID id = UUID.randomUUID();
-        reply.setId(id.toString());
+        reply.setId(UUID.randomUUID().toString());
+        reply.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         //if (reply.getPostId().isEmpty()) reply.setReplyId(null);
         replyDao.create(reply);
         return reply ;

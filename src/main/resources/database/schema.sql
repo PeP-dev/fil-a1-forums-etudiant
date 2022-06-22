@@ -67,6 +67,7 @@ CREATE TABLE REDDIMT_Post
     post_content text,
     id_category varchar(128) NOT NULL,
     user_name varchar(128) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
     FOREIGN KEY (user_name) REFERENCES REDDIMT_User(user_name),
     FOREIGN KEY (id_group) REFERENCES REDDIMT_Group(id),
     FOREIGN KEY (id_category) REFERENCES REDDIMT_Category(id)
@@ -77,7 +78,10 @@ CREATE TABLE REDDIMT_Reply
     id varchar(128) PRIMARY KEY NOT NULL,
     id_post varchar(128) NOT NULL,
     id_reply varchar(128),
-    content text,
+    content text NOT NULL,
+    user_name varchar(128) NOT NULL,
+    created_at TIMESTAMP NOT NULL,
+    FOREIGN KEY (user_name) REFERENCES REDDIMT_User(user_name),
     FOREIGN KEY (id_post) REFERENCES REDDIMT_Post(id),
     FOREIGN KEY (id_reply) REFERENCES REDDIMT_Reply(id)
 );
