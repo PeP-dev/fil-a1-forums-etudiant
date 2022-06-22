@@ -62,10 +62,12 @@ public abstract class LikeDAOSQL<T> extends ReddImtDAOSQL implements LikeDAO<T> 
         var source = new MapSqlParameterSource();
         source.addValue("contentId", contentId);
         source.addValue("userId", userId);
-        source.addValue("contentColumnName", getContentColumnName());
-        source.addValue("userColumnName", getUserColumnName());
-        source.addValue("likeTable", getDaoTableName());
-        getJdbcTemplate().update("DELETE FROM :tableName WHERE :contentColumnName = :contentId AND :userColumnName = :userId", source);
+        getJdbcTemplate().update(
+            String.format("DELETE FROM %s WHERE %s = :contentId AND %s = :userId",
+                getDaoTableName(),
+                getContentColumnName(),
+                getUserColumnName()
+                ), source);
     }
 
     public void addLike(String userId, String contentId) {

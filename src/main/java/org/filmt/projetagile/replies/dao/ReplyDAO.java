@@ -3,10 +3,11 @@ package org.filmt.projetagile.replies.dao;
 import org.filmt.projetagile.replies.model.Reply;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ReplyDAO {
 
-    Reply getReplyById(String replyId);
+    Optional<Reply> getReplyById(String replyId);
 
     void create(Reply reply);
 

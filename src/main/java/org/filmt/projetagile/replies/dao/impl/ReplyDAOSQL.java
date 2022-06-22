@@ -1,6 +1,7 @@
 package org.filmt.projetagile.replies.dao.impl;
 
 import org.filmt.projetagile.common.ReddImtDAOSQL;
+import org.filmt.projetagile.common.jdbc.mapper.ReplyMapper;
 import org.filmt.projetagile.replies.dao.ReplyDAO;
 import org.filmt.projetagile.replies.model.Reply;
 import org.springframework.jdbc.core.RowMapper;
@@ -10,6 +11,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ReplyDAOSQL extends ReddImtDAOSQL implements ReplyDAO {
@@ -32,13 +34,7 @@ public class ReplyDAOSQL extends ReddImtDAOSQL implements ReplyDAO {
 
     private static final String DELETE_REPLY = " DELETE FROM REDDIMT_REPLY";
 
-    private static final RowMapper<Reply> REPLY_MAPPER = (rs, ri)-> new Reply(
-            rs.getString("ID"),
-            rs.getString("ID_POST"),
-            rs.getString("ID_REPLY"),
-            rs.getString("CONTENT"),
-            rs.getString("USER_NAME"),
-            rs.getTimestamp("CREATED_AT"));
+    private static final RowMapper<Reply> REPLY_MAPPER = new ReplyMapper();
 
     public ReplyDAOSQL(NamedParameterJdbcTemplate template) {
         super(template);
@@ -46,8 +42,9 @@ public class ReplyDAOSQL extends ReddImtDAOSQL implements ReplyDAO {
 
 
     @Override
-    public Reply getReplyById(String replyId) {
-        return null;
+    public Optional<Reply> getReplyById(String replyId) {
+        var source = new MapSqlParameterSource("replyId", replyId);
+        return queryOptional(SELECT_REPLY+REPLY_ID_CONDITION, source, REPLY_MAPPER);
     }
 
     @Override
@@ -73,7 +70,7 @@ public class ReplyDAOSQL extends ReddImtDAOSQL implements ReplyDAO {
         source.addValue("createdAt", reply.getCreatedAt());
         getJdbcTemplate().update(UPDATE_REPLY+REPLY_ID_CONDITION, source);
 
-        return getReplyById(reply.getId());
+        return getReplyById(reply.getId()).orElse(null);
     }
 
     @Override

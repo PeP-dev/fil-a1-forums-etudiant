@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Primary
@@ -21,7 +22,7 @@ public class ReplyServiceImpl implements ReplyService {
     private final ReplyDAO replyDao ;
 
     @Override
-    public Reply getReplyById(String replyId) {
+    public Optional<Reply> getReplyById(String replyId) {
         return replyDao.getReplyById(replyId);
     }
 

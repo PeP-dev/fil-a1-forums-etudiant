@@ -1,5 +1,6 @@
 package org.filmt.projetagile.likes.dao.impl;
 
+import org.filmt.projetagile.common.jdbc.mapper.ReplyMapper;
 import org.filmt.projetagile.likes.dao.LikeDAOSQL;
 import org.filmt.projetagile.replies.model.Reply;
 import org.springframework.jdbc.core.RowMapper;
@@ -39,6 +40,6 @@ public class LikeDAOSQLReply extends LikeDAOSQL<Reply> {
     }
     @Override
     protected RowMapper<Reply> getContentRowMapper() {
-        return null;
+        return new ReplyMapper();
     }
 }

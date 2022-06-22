@@ -3,10 +3,11 @@ package org.filmt.projetagile.replies.service;
 import org.filmt.projetagile.replies.model.Reply;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ReplyService {
 
-    Reply getReplyById(String replyId);
+    Optional<Reply> getReplyById(String replyId);
 
     Reply create(Reply reply);
 
