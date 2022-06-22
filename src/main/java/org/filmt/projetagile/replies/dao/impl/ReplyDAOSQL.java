@@ -1,6 +1,7 @@
 package org.filmt.projetagile.replies.dao.impl;
 
 import org.filmt.projetagile.common.ReddImtDAOSQL;
+import org.filmt.projetagile.groups.model.Group;
 import org.filmt.projetagile.replies.dao.ReplyDAO;
 import org.filmt.projetagile.replies.model.Reply;
 import org.springframework.jdbc.core.RowMapper;
@@ -10,6 +11,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ReplyDAOSQL extends ReddImtDAOSQL implements ReplyDAO {
@@ -46,8 +48,9 @@ public class ReplyDAOSQL extends ReddImtDAOSQL implements ReplyDAO {
 
 
     @Override
-    public Reply getReplyById(String replyId) {
-        return null;
+    public Optional<Reply> getReplyById(String replyId) {
+        SqlParameterSource source = new MapSqlParameterSource("replyId", replyId);
+        return queryOptional(SELECT_REPLY+REPLY_ID_CONDITION, source, REPLY_MAPPER);
     }
 
     @Override
@@ -73,7 +76,7 @@ public class ReplyDAOSQL extends ReddImtDAOSQL implements ReplyDAO {
         source.addValue("createdAt", reply.getCreatedAt());
         getJdbcTemplate().update(UPDATE_REPLY+REPLY_ID_CONDITION, source);
 
-        return getReplyById(reply.getId());
+        return reply;
     }
 
     @Override

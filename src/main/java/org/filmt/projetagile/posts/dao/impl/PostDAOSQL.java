@@ -71,8 +71,8 @@ public class PostDAOSQL extends ReddImtDAOSQL implements PostDAO {
     }
 
     @Override
-    public List<Post> getPostsByUserId(String userId) {
-        SqlParameterSource source = new MapSqlParameterSource("userName", userId);
+    public List<Post> getPostsByUserId(String username) {
+        SqlParameterSource source = new MapSqlParameterSource("userName", username);
         return getJdbcTemplate().query(SELECT_POST+USER_NAME_CONDITION, source, POST_MAPPER);
     }
 

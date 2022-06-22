@@ -57,11 +57,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getPostsByUserId(String userId)  {
-        if (postDao.getPostsByUserId(userId).isEmpty()) {
+    public List<Post> getPostsByUserId(String username)  {
+        if (postDao.getPostsByUserId(username).isEmpty()) {
             throw new UserNotFoundException("Cannot find user") ;
         }
-        return postDao.getPostsByUserId(userId) ;
+        return postDao.getPostsByUserId(username) ;
     }
 
     @Override
