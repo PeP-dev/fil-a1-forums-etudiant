@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.filmt.projetagile.exception.GroupNotFoundException;
+import org.filmt.projetagile.exception.PostNotFoundException;
 import org.filmt.projetagile.groups.model.Group;
 import org.filmt.projetagile.posts.model.Post;
 import org.filmt.projetagile.posts.service.impl.PostServiceImpl;
@@ -21,9 +22,9 @@ public class PostController {
 
     private final PostServiceImpl postService;
 
-    @GetMapping("/{groupId}")
-    public ResponseEntity<List<Post>> getPosts(@PathVariable String groupId) {
-        return ResponseEntity.ok(postService.getPostsByGroupId(groupId));
+    @GetMapping("/{postId}")
+    public ResponseEntity<Post> getPosts(@PathVariable String postId) {
+        return ResponseEntity.ok(postService.getPostById(postId).orElseThrow(()-> PostNotFoundException.genericById(postId)));
     }
 
     @GetMapping(value = "/{groupId}", params = "categoryId")
