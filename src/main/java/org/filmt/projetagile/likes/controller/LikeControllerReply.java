@@ -1,15 +1,15 @@
 package org.filmt.projetagile.likes.controller;
 
 import org.filmt.projetagile.likes.service.LikeService;
-import org.filmt.projetagile.posts.model.Post;
+import org.filmt.projetagile.replies.model.Reply;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/likes/posts")
-public class LikeControllerPost extends AbstractLikeController<Post> {
+@RequestMapping("/api/likes/reply")
+public class LikeControllerReply extends AbstractLikeController<Reply> {
 
-    public LikeControllerPost(final LikeService<Post> likeService) {
+    public LikeControllerReply(final LikeService<Reply> likeService) {
         super(likeService);
     }
 }

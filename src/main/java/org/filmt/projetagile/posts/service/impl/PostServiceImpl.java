@@ -27,7 +27,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Optional<Post> getPostById(final String postId) {
-        return Optional.empty();
+        return postDao.getPostById(postId);
     }
 
     @Override

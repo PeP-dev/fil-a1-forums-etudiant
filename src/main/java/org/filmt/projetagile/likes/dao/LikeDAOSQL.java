@@ -1,15 +1,13 @@
 package org.filmt.projetagile.likes.dao;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.filmt.projetagile.common.ReddImtDAOSQL;
-import org.filmt.projetagile.likes.Like;
+import org.filmt.projetagile.common.jdbc.mapper.UserModelMapper;
 import org.filmt.projetagile.user.model.UserModel;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.security.core.userdetails.User;
 
 public abstract class LikeDAOSQL<T> extends ReddImtDAOSQL implements LikeDAO<T> {
 
@@ -31,31 +29,33 @@ public abstract class LikeDAOSQL<T> extends ReddImtDAOSQL implements LikeDAO<T> 
 
     protected abstract RowMapper<T> getContentRowMapper();
 
-    private RowMapper<Like<T>> getRowMapper() {
-        return ((rs, rowNum) -> {
-            T content = getContentRowMapper().mapRow(rs, rowNum);
-            UserModel user = UserModel.builder().email(rs.getString("email")).username(rs.getString("user_name")).avatarUrl(rs.getString("avatar_url")).pseudo(rs.getString("pseudo")).build();
-            return new Like<>(content, user);
-        });
-    }
-
-    public List<Like<T>> getLikedContentByUser(String userId) {
+    public List<T> getLikedContentByUser(String userId) {
         var source = new MapSqlParameterSource();
         source.addValue("id", userId);
-        source.addValue("userColumnName", getUserColumnName());
-        source.addValue("likeTable", getDaoTableName());
-        source.addValue("contentColumnName", getContentColumnName());
-        source.addValue("contentTableName", getDaoTableName());
-        source.addValue("contentPk", getDaoTableName());
-        return getJdbcTemplate().query("SELECT * FROM :likeTable JOIN :contentTableName on :contentTableName.:contentPk = :likeTable.:contentColumnName WHERE :userColumnName = :id", source, getRowMapper());
+        return getJdbcTemplate().query(
+            String.format("SELECT * FROM %1$s JOIN %2$s on %2$s.%3$s = %1$s.%4$s WHERE %1$s.%5$s = :id",
+                getDaoTableName(),
+                getContentTableName(),
+                getContentPk(),
+                getContentColumnName(),
+                getUserColumnName()
+                ),
+            source, getContentRowMapper());
     }
 
-    public int getLikeAmount(String contentId) {
+    public int getContentLikeAmount(String contentId) {
         var source = new MapSqlParameterSource();
         source.addValue("id", contentId);
-        source.addValue("contentColumnName", getContentColumnName());
-        source.addValue("likeTable", getDaoTableName());
-        return getJdbcTemplate().queryForObject("SELECT COUNT(*) as count_column FROM :likeTable WHERE :contentColumnName = :id", source, COUNT_ROW_MAPPER);
+        return getJdbcTemplate().queryForObject(String.format("SELECT COUNT(*) as count_column FROM %s WHERE %s = :id", getDaoTableName(), getContentColumnName()), source, COUNT_ROW_MAPPER);
+    }
+
+    public List<UserModel> getContentLike(String contentId) {
+        var source = new MapSqlParameterSource();
+        source.addValue("id", contentId);
+        return getJdbcTemplate().query(String.format("SELECT * FROM %1$s JOIN REDDIMT_USER ON REDDIMT_USER.USER_NAME = %1$s.%2$s WHERE %1$s.%3$s = :id",
+            getDaoTableName(),
+            getUserColumnName(),
+            getContentColumnName()), source, new UserModelMapper());
     }
 
     public void removeLike(String userId, String contentId) {
@@ -72,9 +72,6 @@ public abstract class LikeDAOSQL<T> extends ReddImtDAOSQL implements LikeDAO<T> 
         var source = new MapSqlParameterSource();
         source.addValue("contentId", contentId);
         source.addValue("userId", userId);
-        source.addValue("contentColumnName", getContentColumnName());
-        source.addValue("userColumnName", getUserColumnName());
-        source.addValue("likeTable", getDaoTableName());
-        getJdbcTemplate().update("INSERT INTO :tableName(:contentColumnName, :userColumnName) VALUES(:contentId, :userId)", source);
+        getJdbcTemplate().update(String.format("INSERT INTO %s (%s, %s) VALUES (:contentId, :userId)", getDaoTableName(), getContentColumnName(), getUserColumnName()), source);
     }
 }

@@ -8,6 +8,8 @@ import org.filmt.projetagile.posts.model.Post;
 import org.filmt.projetagile.posts.service.PostService;
 import org.springframework.stereotype.Service;
 
+import lombok.AllArgsConstructor;
+
 @Service
 public class LikeServicePost extends LikeService<Post> {
 

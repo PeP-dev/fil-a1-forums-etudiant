@@ -45,6 +45,7 @@ public class LikeDAOSQLPost extends LikeDAOSQL<Post> {
             rs.getString("title"),
             rs.getString("post_content"),
             rs.getString("id_category"),
-            rs.getString("user_name")));
+            rs.getString("user_name"),
+            rs.getTimestamp("CREATED_AT")));
     }
 }

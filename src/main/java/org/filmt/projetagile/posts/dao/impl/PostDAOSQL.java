@@ -2,6 +2,7 @@ package org.filmt.projetagile.posts.dao.impl;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.filmt.projetagile.common.ReddImtDAOSQL;
 import org.filmt.projetagile.posts.dao.PostDAO;
@@ -24,7 +25,7 @@ public class PostDAOSQL extends ReddImtDAOSQL implements PostDAO {
 
     private static final String CATEGORY_CONDITION = " WHERE ID_CATEGORY =:categoryId";
 
-    private static final String INSERT_POST = "INSERT INTO REDDIMT_POST VALUES(:id, :groupId, :title, :content, :categoryId, :userName)";
+    private static final String INSERT_POST = "INSERT INTO REDDIMT_POST VALUES(:id, :groupId, :title, :content, :categoryId, :userName, :createdAt)";
 
     private static final String UPDATE_POST = "UPDATE REDDIMT_POST SET ID_GROUP=:groupId, TITLE=:title, POST_CONTENT=:content, ID_CATEGORY=:categoryId";
 
@@ -44,8 +45,9 @@ public class PostDAOSQL extends ReddImtDAOSQL implements PostDAO {
     }
 
     @Override
-    public Post getPostById(final String postId) {
-        return null;
+    public Optional<Post> getPostById(final String postId) {
+        SqlParameterSource source = new MapSqlParameterSource("postId",postId);
+        return queryOptional(SELECT_POST+POST_ID_CONDITION, source, POST_MAPPER);
     }
 
     @Override
@@ -100,7 +102,7 @@ public class PostDAOSQL extends ReddImtDAOSQL implements PostDAO {
         source.addValue("createdAt", post.getCreatedAt());
         getJdbcTemplate().update(UPDATE_POST+POST_ID_CONDITION, source);
 
-        return getPostById(post.getId());
+        return getPostById(post.getId()).orElse(null);
     }
 
     @Override

@@ -2,6 +2,7 @@ package org.filmt.projetagile.auth.dao.impl;
 
 import org.filmt.projetagile.auth.dao.AuthenticationDAO;
 import org.filmt.projetagile.auth.model.GroupRole;
+import org.filmt.projetagile.common.jdbc.mapper.UserModelMapper;
 import org.filmt.projetagile.user.model.UserModel;
 import org.filmt.projetagile.common.ReddImtDAOSQL;
 import org.filmt.projetagile.exception.UserAlreadyExistsException;
@@ -26,14 +27,7 @@ public class AuthenticationDAOSQL extends ReddImtDAOSQL implements Authenticatio
 
     private static final String WHERE_USERNAME = " WHERE user_name = :userName";
 
-    private static final RowMapper<UserModel> ROW_MAPPER = (rs, rowNum) -> new UserModel(
-            rs.getString("user_name"),
-            rs.getString("password"),
-            rs.getString("email"),
-            rs.getString("avatar_url"),
-            rs.getString("note_perso"),
-            rs.getBoolean("global_admin")
-    );
+    private static final RowMapper<UserModel> ROW_MAPPER = new UserModelMapper();
     public AuthenticationDAOSQL(NamedParameterJdbcTemplate template) {
         super(template);
     }
