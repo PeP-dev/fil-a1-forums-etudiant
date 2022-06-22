@@ -1,5 +1,6 @@
 package org.filmt.projetagile.posts.service.impl;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -66,6 +67,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public Post create(final Post post) {
         post.setId(UUID.randomUUID().toString());
+        post.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         postDao.create(post);
         return post ;
     }

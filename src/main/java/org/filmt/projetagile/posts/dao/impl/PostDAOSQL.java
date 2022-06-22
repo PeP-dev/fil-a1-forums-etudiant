@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class PostDAOSQL extends ReddImtDAOSQL implements PostDAO {
-    private static final String SELECT_POST = "SELECT ID, ID_GROUP, TITLE, POST_CONTENT, ID_CATEGORY, USER_NAME FROM REDDIMT_POST";
+    private static final String SELECT_POST = "SELECT ID, ID_GROUP, TITLE, POST_CONTENT, ID_CATEGORY, USER_NAME, CREATED_AT FROM REDDIMT_POST";
 
     private static final String GROUP_ID_CONDITION = " WHERE ID_GROUP = :groupId";
 
@@ -36,7 +36,9 @@ public class PostDAOSQL extends ReddImtDAOSQL implements PostDAO {
         rs.getString("TITLE"),
         rs.getString("POST_CONTENT"),
         rs.getString("ID_CATEGORY"),
-        rs.getString("USER_NAME"));
+        rs.getString("USER_NAME"),
+        rs.getTimestamp("CREATED_AT"));
+
     public PostDAOSQL(final NamedParameterJdbcTemplate template) {
         super(template);
     }
@@ -83,6 +85,7 @@ public class PostDAOSQL extends ReddImtDAOSQL implements PostDAO {
         source.addValue("content", post.getContent());
         source.addValue("categoryId", post.getCategoryId());
         source.addValue("userName", post.getUserName());
+        source.addValue("createdAt", post.getCreatedAt());
         getJdbcTemplate().update(INSERT_POST, source);
     }
 
@@ -94,6 +97,7 @@ public class PostDAOSQL extends ReddImtDAOSQL implements PostDAO {
         source.addValue("content", post.getContent());
         source.addValue("categoryId", post.getCategoryId());
         source.addValue("postId", post.getId());
+        source.addValue("createdAt", post.getCreatedAt());
         getJdbcTemplate().update(UPDATE_POST+POST_ID_CONDITION, source);
 
         return getPostById(post.getId());

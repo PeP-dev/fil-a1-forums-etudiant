@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,5 +31,15 @@ public class Reply {
      * Contenu de la réponse
      */
     private String content;
+
+    /**
+     * Identifiant du publicateur
+     */
+    private String userName;
+
+    /**
+     * Date de création reply
+     */
+    private Timestamp createdAt;
 
 }
