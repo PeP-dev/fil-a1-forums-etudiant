@@ -26,9 +26,9 @@ public class ReplyDAOSQL extends ReddImtDAOSQL implements ReplyDAO {
 
     private static final String REPLY_ID_NULL = " AND ID_REPLY is null";
 
-    private static final String INSERT_REPLY = " INSERT INTO REDDIMT_REPLY VALUES(:id, :postId, :replyId, :content)";
+    private static final String INSERT_REPLY = " INSERT INTO REDDIMT_REPLY VALUES(:id, :postId, :replyId, :content, :userName, :createdAt)";
 
-    private static final String UPDATE_REPLY = " UPDATE REDDIMT_REPLY SET ID=: id, ID_POST=:postId, ID_REPLY=:replyId, CONTENT=:content";
+    private static final String UPDATE_REPLY = " UPDATE REDDIMT_REPLY SET ID=: id, ID_POST=:postId, ID_REPLY=:replyId, CONTENT=:content, USER_NAME=:userName, CREATED_AT=:createdAt";
 
     private static final String DELETE_REPLY = " DELETE FROM REDDIMT_REPLY";
 
