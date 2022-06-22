@@ -34,14 +34,6 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<UserDetails> login(@AuthenticationPrincipal UserDetails userDetails, HttpServletResponse response) {
-        if (userDetails == null) {
-            return ResponseEntity.badRequest().build();
-        }
-        return ResponseEntity.ok(userDetails);
-    }
-
     @PostMapping("/logout")
     public ResponseEntity<Void> signOut(HttpServletRequest request) {
         SecurityContextHolder.clearContext();

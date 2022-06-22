@@ -2,23 +2,40 @@ package org.filmt.projetagile.likes.service;
 
 import java.util.List;
 
+import org.filmt.projetagile.exception.PublicException;
+import org.filmt.projetagile.likes.Like;
 import org.filmt.projetagile.likes.dao.LikeDAO;
 
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 public abstract class LikeService<T> {
+
     LikeDAO<T> likeDao;
 
-    List<T> getLikedContentByUser(String userId) {
+    public List<Like<T>> getLikedContentByUser(String userId) {
         return likeDao.getLikedContentByUser(userId);
     }
 
-    int getLikeAmount(String contentId) {
+    public int getLikeAmount(String contentId) {
+        throwIfMissingContent(contentId);
         return likeDao.getLikeAmount(contentId);
     }
 
-    void removeLike(String userId, String contentId) {
+    public void removeLike(String userId, String contentId) {
+        throwIfMissingContent(contentId);
+        throwIfMissingUser(userId);
         likeDao.removeLike(userId, contentId);
+    }
+
+    public void addLike(String userId, String contentId) {
+        throwIfMissingContent(contentId);
+        throwIfMissingUser(userId);
+        likeDao.addLike(userId, contentId);
+    }
+
+    protected abstract void throwIfMissingContent(String contentId) throws PublicException;
+
+    private void throwIfMissingUser(String userId) throws PublicException {
     }
 }

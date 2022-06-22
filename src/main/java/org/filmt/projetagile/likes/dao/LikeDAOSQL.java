@@ -1,11 +1,15 @@
 package org.filmt.projetagile.likes.dao;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.filmt.projetagile.common.ReddImtDAOSQL;
+import org.filmt.projetagile.likes.Like;
+import org.filmt.projetagile.user.model.UserModel;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.security.core.userdetails.User;
 
 public abstract class LikeDAOSQL<T> extends ReddImtDAOSQL implements LikeDAO<T> {
 
@@ -17,18 +21,33 @@ public abstract class LikeDAOSQL<T> extends ReddImtDAOSQL implements LikeDAO<T> 
 
     public abstract String getDaoTableName();
 
+    public abstract String getContentTableName();
+
+    public abstract String getContentPk();
+
     public abstract String getContentColumnName();
 
     public abstract String getUserColumnName();
 
-    protected abstract RowMapper<T> getRowMapper();
+    protected abstract RowMapper<T> getContentRowMapper();
 
-    public List<T> getLikedContentByUser(String userId) {
+    private RowMapper<Like<T>> getRowMapper() {
+        return ((rs, rowNum) -> {
+            T content = getContentRowMapper().mapRow(rs, rowNum);
+            UserModel user = UserModel.builder().email(rs.getString("email")).username(rs.getString("user_name")).avatarUrl(rs.getString("avatar_url")).pseudo(rs.getString("pseudo")).build();
+            return new Like<>(content, user);
+        });
+    }
+
+    public List<Like<T>> getLikedContentByUser(String userId) {
         var source = new MapSqlParameterSource();
         source.addValue("id", userId);
         source.addValue("userColumnName", getUserColumnName());
         source.addValue("likeTable", getDaoTableName());
-        return getJdbcTemplate().query("SELECT * FROM :likeTable WHERE :userColumnName = :id", source, getRowMapper());
+        source.addValue("contentColumnName", getContentColumnName());
+        source.addValue("contentTableName", getDaoTableName());
+        source.addValue("contentPk", getDaoTableName());
+        return getJdbcTemplate().query("SELECT * FROM :likeTable JOIN :contentTableName on :contentTableName.:contentPk = :likeTable.:contentColumnName WHERE :userColumnName = :id", source, getRowMapper());
     }
 
     public int getLikeAmount(String contentId) {
@@ -47,5 +66,15 @@ public abstract class LikeDAOSQL<T> extends ReddImtDAOSQL implements LikeDAO<T> 
         source.addValue("userColumnName", getUserColumnName());
         source.addValue("likeTable", getDaoTableName());
         getJdbcTemplate().update("DELETE FROM :tableName WHERE :contentColumnName = :contentId AND :userColumnName = :userId", source);
+    }
+
+    public void addLike(String userId, String contentId) {
+        var source = new MapSqlParameterSource();
+        source.addValue("contentId", contentId);
+        source.addValue("userId", userId);
+        source.addValue("contentColumnName", getContentColumnName());
+        source.addValue("userColumnName", getUserColumnName());
+        source.addValue("likeTable", getDaoTableName());
+        getJdbcTemplate().update("INSERT INTO :tableName(:contentColumnName, :userColumnName) VALUES(:contentId, :userId)", source);
     }
 }
