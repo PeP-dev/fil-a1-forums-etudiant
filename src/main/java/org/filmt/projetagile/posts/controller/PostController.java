@@ -1,11 +1,8 @@
 package org.filmt.projetagile.posts.controller;
 
 import java.util.List;
-import java.util.UUID;
 
-import org.filmt.projetagile.exception.GroupNotFoundException;
 import org.filmt.projetagile.exception.PostNotFoundException;
-import org.filmt.projetagile.groups.model.Group;
 import org.filmt.projetagile.posts.model.Post;
 import org.filmt.projetagile.posts.service.impl.PostServiceImpl;
 import org.springframework.http.HttpStatus;
@@ -13,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.AllArgsConstructor;
-import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @AllArgsConstructor
@@ -37,9 +33,9 @@ public class PostController {
         return ResponseEntity.ok(postService.getPostByCategory(groupId, categoryId));
     }
 
-    @GetMapping(value = "/user/{userId}")
-    public ResponseEntity<List<Post>> getPostsByUserId(@PathVariable String userId) {
-        return ResponseEntity.ok(postService.getPostsByUserId(userId));
+    @GetMapping(value = "",params = "username")
+    public ResponseEntity<List<Post>> getPostsByUserId(@RequestParam String username) {
+        return ResponseEntity.ok(postService.getPostsByUserId(username));
     }
 
 
