@@ -42,9 +42,12 @@ public abstract class RoleDAOSQL<T> extends ReddImtDAOSQL implements RoleDAO<T>{
     public List<T> getByAnyRole(final String userId) {
         var source = new MapSqlParameterSource("userId", userId);
         return getJdbcTemplate().query(
-            String.format("SELECT * FROM %1$s WHERE %2$s = :userId",
+            String.format("SELECT * FROM %1$s JOIN %3$s ON %3$s.%4$s = %1$s.%5$s WHERE %2$s = :userId ",
                 getRoleAssociationTableName(),
-                getUserColumnName()),
+                getUserColumnName(),
+                getEntityTableName(),
+                getEntityPk(),
+                getEntityColumnName()),
             source,
             getRowMapper());
     }
@@ -53,26 +56,29 @@ public abstract class RoleDAOSQL<T> extends ReddImtDAOSQL implements RoleDAO<T>{
     public List<T> getByRole(final String userId, final Role role) {
         var source = new MapSqlParameterSource();
         source.addValue("userId", userId);
-        source.addValue("roleCode", role.getCode());
+        source.addValue("roleCode", Integer.toString(role.getCode()));
 
         return getJdbcTemplate().query(
-            String.format("SELECT * FROM %1$s WHERE %2$s = :userId and %3$s = :roleCode",
-                    getRoleAssociationTableName(),
-                    getUserColumnName(),
-                    getRoleColumnName()),
+            String.format("SELECT * FROM %1$s JOIN %4$s ON %4$s.%5$s = %1$s.%6$s WHERE %2$s = :userId and %3$s = :roleCode",
+                getRoleAssociationTableName(),
+                getUserColumnName(),
+                getRoleColumnName(),
+                getEntityTableName(),
+                getEntityPk(),
+                getEntityColumnName()),
             source,
             getRowMapper()
         );
     }
 
     @Override
-    public Optional<Role> getRoleForEntity(final String entityId, final String userId) {
+    public Optional<Role> getRoleForEntity(final String userId, final String entityId) {
         var source = new MapSqlParameterSource();
         source.addValue("userId", userId);
         source.addValue("entityId", entityId);
 
         return queryOptional(
-            String.format("SELECT * FROM %s WHERE %s = :userId and %s = :entityId",
+            String.format("SELECT ID_ROLE as ID FROM %s WHERE %s = :userId and %s = :entityId",
                 getRoleAssociationTableName(),
                 getUserColumnName(),
                 getEntityColumnName()),
@@ -82,7 +88,7 @@ public abstract class RoleDAOSQL<T> extends ReddImtDAOSQL implements RoleDAO<T>{
     }
 
     @Override
-    public void addRole(final String userId, final Role role, final String entityId) {
+    public void addRole(final String userId, final String entityId, final Role role) {
         var source = new MapSqlParameterSource();
         source.addValue("userId", userId);
         source.addValue("roleCode", role.getCode());
@@ -111,6 +117,17 @@ public abstract class RoleDAOSQL<T> extends ReddImtDAOSQL implements RoleDAO<T>{
 
     @Override
     public void changeRole(final String userId, final String entityId, final Role role) {
+        var source = new MapSqlParameterSource();
+        source.addValue("userId", userId);
+        source.addValue("entityId", entityId);
+        source.addValue("roleCode", role.getCode());
+        getJdbcTemplate().update(
+            String.format("UPDATE %s SET %s = :roleCode WHERE %s = :userId and %s = :entityId",
+                getRoleAssociationTableName(),
+                getRoleColumnName(),
+                getUserColumnName(),
+                getEntityColumnName()
+            ),source);
     }
 
 

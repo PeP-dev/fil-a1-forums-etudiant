@@ -11,9 +11,9 @@ public interface RoleDAO<T> {
 
     List<T> getByRole(String userId, Role role);
 
-    Optional<Role> getRoleForEntity(String entityId, final String userId);
+    Optional<Role> getRoleForEntity(final String userId, String entityId);
 
-    void addRole(String userId, Role role, final String entityId);
+    void addRole(String userId, final String entityId, Role role);
 
     void removeRole(String userId, final String entityId);
 

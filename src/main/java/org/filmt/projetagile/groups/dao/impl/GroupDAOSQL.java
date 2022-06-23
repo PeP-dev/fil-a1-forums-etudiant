@@ -1,6 +1,7 @@
 package org.filmt.projetagile.groups.dao.impl;
 
 import org.filmt.projetagile.common.ReddImtDAOSQL;
+import org.filmt.projetagile.common.jdbc.mapper.GroupMapper;
 import org.filmt.projetagile.groups.dao.GroupDAO;
 import org.filmt.projetagile.groups.model.Group;
 import org.springframework.jdbc.core.RowMapper;
@@ -29,11 +30,7 @@ public class GroupDAOSQL extends ReddImtDAOSQL implements GroupDAO {
 
     private static final String DELETE_GROUP = "DELETE FROM REDDIMT_GROUP";
 
-    private static final RowMapper<Group> GROUP_MAPPER = (rs, ri)-> new Group(
-            rs.getString("ID"),
-            rs.getString("ID_ECOLE"),
-            rs.getString("LIBELLE"),
-            rs.getString("DESCRIPTION"));
+    private static final RowMapper<Group> GROUP_MAPPER = new GroupMapper();
 
     public GroupDAOSQL(NamedParameterJdbcTemplate template) {
         super(template);

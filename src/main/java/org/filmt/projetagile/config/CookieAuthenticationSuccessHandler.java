@@ -40,7 +40,7 @@ public class CookieAuthenticationSuccessHandler implements AuthenticationSuccess
             authService.createToken((UserDetails) auth.getPrincipal()));
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
-        cookie.setMaxAge(Duration.of(30, ChronoUnit.DAYS).toSecondsPart());
+        cookie.setMaxAge(-1);
         cookie.setPath("/");
         response.addCookie(cookie);
     }

@@ -1,6 +1,7 @@
 package org.filmt.projetagile.school.dao.impl;
 
 import org.filmt.projetagile.common.ReddImtDAOSQL;
+import org.filmt.projetagile.common.jdbc.mapper.SchoolMapper;
 import org.filmt.projetagile.exception.SchoolNotFoundException;
 import org.filmt.projetagile.school.dao.SchoolDAO;
 import org.filmt.projetagile.school.model.School;
@@ -31,11 +32,7 @@ public class SchoolDAOSQL extends ReddImtDAOSQL implements SchoolDAO {
 
     private static final String DELETE_SCHOOL = "DELETE FROM REDDIMT_SCHOOL";
 
-    private static final RowMapper<School> SCHOOL_MAPPER = (rs, ri)-> new School(
-            rs.getString("ID"),
-            rs.getString("LIBELLE"),
-            rs.getString("SCHOOL_TYPE"),
-            rs.getString("DESCRIPTION"));
+    private static final RowMapper<School> SCHOOL_MAPPER = new SchoolMapper();
 
     public SchoolDAOSQL(NamedParameterJdbcTemplate template) {
         super(template);
