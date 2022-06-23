@@ -1,10 +1,18 @@
 package org.filmt.projetagile.auth.service.impl;
 
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
+import java.util.Objects;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+
 import org.filmt.projetagile.auth.dao.AuthenticationDAO;
-import org.filmt.projetagile.auth.model.GroupRole;
 import org.filmt.projetagile.auth.model.RegisterCredentials;
-import org.filmt.projetagile.user.model.UserModel;
 import org.filmt.projetagile.auth.service.AuthService;
+import org.filmt.projetagile.user.model.UserModel;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -12,14 +20,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
-import java.util.Objects;
 
 @Service
 @Primary
@@ -81,11 +81,6 @@ public class AuthServiceImpl implements AuthService {
     }
     public String createToken(UserDetails userDetails) {
         return userDetails.getUsername() + "&" + calculateHmac(userDetails.getUsername());
-    }
-
-    @Override
-    public GroupRole getRoleByUserNameAndGroupId(final String userName, final String groupId) {
-        return authenticationDAO.getRoleByUserNameAndGroupId(userName, groupId);
     }
 
     @Override

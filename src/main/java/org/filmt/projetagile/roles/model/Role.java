@@ -17,4 +17,8 @@ public enum Role {
     public static Role getByCode(int i) {
         return Arrays.stream(Role.values()).filter(roles -> roles.getCode() == i).findFirst().orElseThrow(()->new RuntimeException("Couldn't find a role with code "+i));
     }
+
+    public boolean isAtLeast(Role role) {
+        return this.getCode() >= role.getCode();
+    }
 }

@@ -34,6 +34,10 @@ public class ReplyServiceImpl implements ReplyService {
     public Reply create(Reply reply) {
         reply.setId(UUID.randomUUID().toString());
         reply.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        if(postService.getPostById(reply.getPostId()).isEmpty()) {
+            throw ReplyNotFoundException.genericById(reply.getPostId());
+        }
+
         replyDao.create(reply);
         return reply ;
     }

@@ -7,6 +7,7 @@ import org.filmt.projetagile.groups.model.Category;
 import org.filmt.projetagile.groups.model.Group;
 import org.filmt.projetagile.groups.service.GroupService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,7 @@ public class GroupController {
         GroupService groupService;
 
     @DeleteMapping("/{groupId}")
+    @PreAuthorize("schoolPrivilegesHigherThan(#groupId, 'ADMINISTRATEUR')")
     public ResponseEntity<Void> deleteGroup(@PathVariable String groupId) {
         groupService.delete(groupId);
         return ResponseEntity.noContent().build();

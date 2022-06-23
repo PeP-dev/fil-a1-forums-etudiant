@@ -1,19 +1,18 @@
 package org.filmt.projetagile.auth.dao.impl;
 
+import java.util.Optional;
+
 import org.filmt.projetagile.auth.dao.AuthenticationDAO;
-import org.filmt.projetagile.auth.model.GroupRole;
-import org.filmt.projetagile.common.jdbc.mapper.UserModelMapper;
-import org.filmt.projetagile.user.model.UserModel;
 import org.filmt.projetagile.common.ReddImtDAOSQL;
+import org.filmt.projetagile.common.jdbc.mapper.UserModelMapper;
 import org.filmt.projetagile.exception.UserAlreadyExistsException;
+import org.filmt.projetagile.user.model.UserModel;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,11 +29,6 @@ public class AuthenticationDAOSQL extends ReddImtDAOSQL implements Authenticatio
     private static final RowMapper<UserModel> ROW_MAPPER = new UserModelMapper();
     public AuthenticationDAOSQL(NamedParameterJdbcTemplate template) {
         super(template);
-    }
-
-    @Override
-    public GroupRole getRoleByUserNameAndGroupId(String userName, String groupId) {
-        return null;
     }
 
     @Override
