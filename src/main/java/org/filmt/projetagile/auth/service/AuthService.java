@@ -1,7 +1,7 @@
 package org.filmt.projetagile.auth.service;
 
 import org.filmt.projetagile.auth.model.GroupRole;
-import org.filmt.projetagile.auth.model.LoginCredentials;
+import org.filmt.projetagile.auth.model.RegisterCredentials;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -15,5 +15,5 @@ public interface AuthService extends UserDetailsService {
 
     GroupRole getRoleByUserNameAndGroupId(String userName, String groupId);
 
-    UserDetails registerUser(LoginCredentials credentials);
+    UserDetails registerUser(RegisterCredentials credentials);
 }
