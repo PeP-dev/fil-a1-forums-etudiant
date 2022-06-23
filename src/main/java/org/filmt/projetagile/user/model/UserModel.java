@@ -65,6 +65,7 @@ public class UserModel implements UserDetails {
         this.user = new User(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     }
 
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.user.getAuthorities();

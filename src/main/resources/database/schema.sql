@@ -50,6 +50,17 @@ CREATE TABLE REDDIMT_Role_groupe
     FOREIGN KEY (id_role) REFERENCES REDDIMT_Role(id)
 );
 
+CREATE TABLE REDDIMT_Role_school
+(
+    id_school varchar(128) NOT NULL,
+    user_name varchar(128) NOT NULL,
+    id_role varchar(128) NOT NULL,
+    CONSTRAINT PK_Role_School PRIMARY KEY (id_school,user_name),
+    FOREIGN KEY (id_school) REFERENCES REDDIMT_School(id),
+    FOREIGN KEY (user_name) REFERENCES REDDIMT_User(user_name),
+    FOREIGN KEY (id_role) REFERENCES REDDIMT_Role(id)
+);
+
 CREATE TABLE REDDIMT_Category
 (
     id varchar(128) PRIMARY KEY NOT NULL,
