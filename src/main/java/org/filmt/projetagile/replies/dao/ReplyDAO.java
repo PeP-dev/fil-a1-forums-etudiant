@@ -1,6 +1,5 @@
 package org.filmt.projetagile.replies.dao;
 
-import org.filmt.projetagile.groups.model.Group;
 import org.filmt.projetagile.replies.model.Reply;
 
 import java.util.List;

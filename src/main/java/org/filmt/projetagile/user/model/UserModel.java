@@ -3,6 +3,7 @@ package org.filmt.projetagile.user.model;
 import java.util.Collection;
 import java.util.Collections;
 
+import lombok.Data;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -17,6 +18,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@Data
 public class UserModel implements UserDetails {
 
     private String email = Strings.EMPTY;
