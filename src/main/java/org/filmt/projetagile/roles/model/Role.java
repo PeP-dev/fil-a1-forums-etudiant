@@ -7,7 +7,8 @@ import lombok.Getter;
 @Getter
 public enum Role {
     ETUDIANT(1),
-    ADMINISTRATEUR(2);
+    ADMINISTRATEUR(2),
+    PROPRIETAIRE(3);
     private final int code;
     Role(int code) {
         this.code = code;

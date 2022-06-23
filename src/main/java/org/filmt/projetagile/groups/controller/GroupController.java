@@ -3,6 +3,7 @@ package org.filmt.projetagile.groups.controller;
 import java.util.List;
 
 import org.filmt.projetagile.exception.GroupNotFoundException;
+import org.filmt.projetagile.groups.model.Category;
 import org.filmt.projetagile.groups.model.Group;
 import org.filmt.projetagile.groups.service.GroupService;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class GroupController {
 
-    GroupService groupService;
+        GroupService groupService;
 
     @DeleteMapping("/{groupId}")
     public ResponseEntity<Void> deleteGroup(@PathVariable String groupId) {
@@ -49,5 +50,15 @@ public class GroupController {
     @PutMapping("")
     public ResponseEntity<Group> update(@RequestBody final Group group) {
         return ResponseEntity.ok(groupService.update(group));
+    }
+
+    @DeleteMapping("/{groupId}/categories/{categoryId}")
+    public void delete(@PathVariable final String groupId, @PathVariable final String categoryId) {
+        groupService.delete(groupId, categoryId);
+    }
+
+    @PostMapping("/{groupId}/categories")
+    public void createCategory(@PathVariable final String groupId, @RequestBody final Category category) {
+        groupService.createCategory(groupId, category);
     }
 }

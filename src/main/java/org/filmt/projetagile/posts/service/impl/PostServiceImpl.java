@@ -22,7 +22,7 @@ public class PostServiceImpl implements PostService {
     private final PostDAO postDao;
 
     GroupService groupService ;
-    SchoolService schoolService ;
+    SchoolService schoolService;
 
     @Override
     public Optional<Post> getPostById(final String postId) {
@@ -39,19 +39,14 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> getPostByCategory(final String groupId, final String categoryId) {
-        if (postDao.getPostByCategory(groupId, categoryId).isEmpty()) {
-            throw CategoryNotFoundException.genericById(groupId);
-        }
         return postDao.getPostByCategory(groupId, categoryId);
     }
 
     @Override
     public List<Post> getPostsBySchoolIdAndTitle(final String schoolId, final String title) {
-
         if (schoolService.getSchoolById(schoolId).isEmpty()) {
             throw SchoolNotFoundException.genericById(schoolId);
         }
-
         return postDao.getPostsBySchoolIdAndTitle(schoolId, title);
     }
 
@@ -75,6 +70,9 @@ public class PostServiceImpl implements PostService {
     public Post create(final Post post) {
         post.setId(UUID.randomUUID().toString());
         post.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        if(groupService.getGroupById(post.getGroupId()).isEmpty()) {
+            throw GroupNotFoundException.genericById(post.getGroupId());
+        }
         postDao.create(post);
         return post ;
     }

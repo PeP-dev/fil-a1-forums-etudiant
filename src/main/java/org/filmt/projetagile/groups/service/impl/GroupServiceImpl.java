@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.filmt.projetagile.exception.CategoryNotFoundException;
 import org.filmt.projetagile.exception.GroupNotFoundException;
 import org.filmt.projetagile.exception.SchoolNotFoundException;
 import org.filmt.projetagile.groups.dao.GroupDAO;
+import org.filmt.projetagile.groups.model.Category;
 import org.filmt.projetagile.groups.model.Group;
 import org.filmt.projetagile.groups.service.GroupService;
 import org.filmt.projetagile.school.service.SchoolService;
@@ -27,7 +29,12 @@ public class GroupServiceImpl implements GroupService {
         if (schoolService.getSchoolById(group.getSchoolId()).isEmpty()) {
              throw SchoolNotFoundException.genericById(group.getSchoolId());
         }
-        return groupDAO.create(group);
+        Group created = groupDAO.create(group);
+
+        if(created.getCategories() != null) {
+            created.getCategories().forEach(cat->createCategory(created.getId(), cat));
+        }
+        return created;
     }
 
     @Override
@@ -61,5 +68,31 @@ public class GroupServiceImpl implements GroupService {
         } else {
             throw GroupNotFoundException.genericById(id);
         }
+    }
+
+    @Override
+    public void createCategory(final String groupId, final Category category) {
+        if (getGroupById(groupId).isEmpty()) {
+            throw GroupNotFoundException.genericById(groupId);
+        }
+        category.setId(UUID.randomUUID().toString());
+        groupDAO.createCategory(groupId, category);
+    }
+
+    @Override
+    public void delete(final String groupId, final String categoryId) {
+        Optional<Group> opt = getGroupById(groupId);
+        if (opt.isEmpty()) {
+            throw GroupNotFoundException.genericById(groupId);
+        }
+        boolean hasCategory = opt.map(Group::getCategories)
+            .stream()
+            .flatMap(List::stream)
+            .map(Category::getId)
+            .anyMatch(str -> str.equals(categoryId));
+        if (!hasCategory) {
+            throw CategoryNotFoundException.genericById(categoryId);
+        }
+        groupDAO.deleteCategory(groupId, categoryId);
     }
 }
