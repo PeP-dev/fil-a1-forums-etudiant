@@ -27,16 +27,21 @@ public abstract class RoleService<T> {
 
     public Optional<Role> getRoleForEntity(final String userName, final String entityId) throws RoleNotFoundException {
         throwIfMissingUser(userName);
+        throwIfMissingEntity(entityId);
+
         return roleDAO.getRoleForEntity(userName, entityId);
     }
 
     public void removeRole(final String userName, final String entityId) {
         throwIfMissingUser(userName);
+        throwIfMissingEntity(entityId);
+
         roleDAO.removeRole(userName, entityId);
     }
 
     public void changeRole(final String userName, final String entityId, final Role role) {
         throwIfMissingUser(userName);
+        throwIfMissingEntity(entityId);
         if(getRoleForEntity(userName, entityId).isPresent()) {
             roleDAO.changeRole(userName, entityId, role);
         } else {

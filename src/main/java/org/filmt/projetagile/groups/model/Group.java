@@ -1,18 +1,10 @@
 package org.filmt.projetagile.groups.model;
 
-import java.util.Collections;
-import java.util.List;
-
-import javax.validation.constraints.NotNull;
-
-import org.springframework.lang.NonNull;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Classe représentant un groupe dans une école

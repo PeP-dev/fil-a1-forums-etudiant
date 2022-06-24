@@ -1,15 +1,13 @@
 package org.filmt.projetagile.auth.model;
 
-import org.filmt.projetagile.roles.model.Role;
-import org.springframework.lang.NonNull;
-
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 @Getter
 @Setter
@@ -17,16 +15,15 @@ import lombok.ToString;
 @ToString
 public class RegisterCredentials {
     @JsonProperty("user_name")
-    @JsonAlias({"name","login"})
     @NonNull
     private String username;
 
     @JsonProperty("password")
-    @JsonAlias("pwd")
     @NonNull
     private String password;
 
     @JsonProperty("schoolId")
     @JsonAlias("school")
+    @Nullable
     private String schoolId;
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.filmt.projetagile.likes.service.LikeService;
 import org.filmt.projetagile.user.model.UserModel;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,12 +34,14 @@ public class AbstractLikeController<T> {
     }
 
     @DeleteMapping("")
+    @PreAuthorize("authenticated")
     public ResponseEntity<List<T>> deleteLike(@RequestParam String userId, @RequestParam String contentId) {
         likeService.removeLike(userId, contentId);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("")
+    @PreAuthorize("authenticated")
     public ResponseEntity<List<T>> postLike(@RequestParam String userId, @RequestParam String contentId) {
         likeService.addLike(userId, contentId);
         return ResponseEntity.noContent().build();
