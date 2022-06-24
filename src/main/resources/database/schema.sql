@@ -27,7 +27,7 @@ CREATE TABLE REDDIMT_School
     libelle varchar(255) NOT NULL,
     school_type varchar(128),
     description text,
-    FOREIGN KEY (school_type) REFERENCES REDDIMT_School_Type(id)
+    FOREIGN KEY (school_type) REFERENCES REDDIMT_School_Type(id) ON DELETE CASCADE
 );
 
 CREATE TABLE REDDIMT_Group
@@ -36,7 +36,7 @@ CREATE TABLE REDDIMT_Group
     id_ecole varchar(128),
     libelle text NOT NULL,
     description text,
-    FOREIGN KEY (id_ecole) REFERENCES REDDIMT_School(id)
+    FOREIGN KEY (id_ecole) REFERENCES REDDIMT_School(id) ON DELETE CASCADE
 );
 
 CREATE TABLE REDDIMT_Role_groupe
@@ -45,9 +45,9 @@ CREATE TABLE REDDIMT_Role_groupe
     user_name varchar(128) NOT NULL,
     id_role varchar(128) NOT NULL,
     CONSTRAINT PK_Role_Groupe PRIMARY KEY (id_group,user_name),
-    FOREIGN KEY (id_group) REFERENCES REDDIMT_Group(id),
-    FOREIGN KEY (user_name) REFERENCES REDDIMT_User(user_name),
-    FOREIGN KEY (id_role) REFERENCES REDDIMT_Role(id)
+    FOREIGN KEY (id_group) REFERENCES REDDIMT_Group(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_name) REFERENCES REDDIMT_User(user_name) ON DELETE CASCADE,
+    FOREIGN KEY (id_role) REFERENCES REDDIMT_Role(id) ON DELETE CASCADE
 );
 
 CREATE TABLE REDDIMT_Role_school
@@ -56,9 +56,9 @@ CREATE TABLE REDDIMT_Role_school
     user_name varchar(128) NOT NULL,
     id_role varchar(128) NOT NULL,
     CONSTRAINT PK_Role_School PRIMARY KEY (id_school,user_name),
-    FOREIGN KEY (id_school) REFERENCES REDDIMT_School(id),
-    FOREIGN KEY (user_name) REFERENCES REDDIMT_User(user_name),
-    FOREIGN KEY (id_role) REFERENCES REDDIMT_Role(id)
+    FOREIGN KEY (id_school) REFERENCES REDDIMT_School(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_name) REFERENCES REDDIMT_User(user_name) ON DELETE CASCADE,
+    FOREIGN KEY (id_role) REFERENCES REDDIMT_Role(id) ON DELETE CASCADE
 );
 
 CREATE TABLE REDDIMT_Category
@@ -67,7 +67,7 @@ CREATE TABLE REDDIMT_Category
     id_group varchar(128),
     libelle varchar(255),
     description text,
-    FOREIGN KEY (id_group) REFERENCES REDDIMT_Group(id)
+    FOREIGN KEY (id_group) REFERENCES REDDIMT_Group(id) ON DELETE CASCADE
 );
 
 CREATE TABLE REDDIMT_Post
@@ -79,9 +79,9 @@ CREATE TABLE REDDIMT_Post
     id_category varchar(128) NOT NULL,
     user_name varchar(128) NOT NULL,
     created_at TIMESTAMP NOT NULL,
-    FOREIGN KEY (user_name) REFERENCES REDDIMT_User(user_name),
-    FOREIGN KEY (id_group) REFERENCES REDDIMT_Group(id),
-    FOREIGN KEY (id_category) REFERENCES REDDIMT_Category(id)
+    FOREIGN KEY (user_name) REFERENCES REDDIMT_User(user_name) ON DELETE CASCADE,
+    FOREIGN KEY (id_group) REFERENCES REDDIMT_Group(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_category) REFERENCES REDDIMT_Category(id) ON DELETE CASCADE
 );
 
 CREATE TABLE REDDIMT_Reply
@@ -92,9 +92,9 @@ CREATE TABLE REDDIMT_Reply
     content text NOT NULL,
     user_name varchar(128) NOT NULL,
     created_at TIMESTAMP NOT NULL,
-    FOREIGN KEY (user_name) REFERENCES REDDIMT_User(user_name),
-    FOREIGN KEY (id_post) REFERENCES REDDIMT_Post(id),
-    FOREIGN KEY (id_reply) REFERENCES REDDIMT_Reply(id)
+    FOREIGN KEY (user_name) REFERENCES REDDIMT_User(user_name) ON DELETE CASCADE,
+    FOREIGN KEY (id_post) REFERENCES REDDIMT_Post(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_reply) REFERENCES REDDIMT_Reply(id) ON DELETE CASCADE
 );
 
 CREATE TABLE REDDIMT_Like_Post
@@ -102,8 +102,8 @@ CREATE TABLE REDDIMT_Like_Post
     user_name varchar(128) NOT NULL,
     id_post varchar(128) NOT NULL,
     CONSTRAINT PK_Like_Post PRIMARY KEY (user_name,id_post),
-    FOREIGN KEY (user_name) REFERENCES REDDIMT_User(user_name),
-    FOREIGN KEY (id_post) REFERENCES REDDIMT_Post(id)
+    FOREIGN KEY (user_name) REFERENCES REDDIMT_User(user_name) ON DELETE CASCADE,
+    FOREIGN KEY (id_post) REFERENCES REDDIMT_Post(id) ON DELETE CASCADE
 );
 
 CREATE TABLE REDDIMT_Like_Reply
@@ -111,8 +111,8 @@ CREATE TABLE REDDIMT_Like_Reply
     user_name varchar(128) NOT NULL,
     id_reply varchar(128) NOT NULL,
     CONSTRAINT PK_Like_Reply PRIMARY KEY (user_name,id_reply),
-    FOREIGN KEY (user_name) REFERENCES REDDIMT_User(user_name),
-    FOREIGN KEY (id_reply) REFERENCES REDDIMT_Reply(id)
+    FOREIGN KEY (user_name) REFERENCES REDDIMT_User(user_name) ON DELETE CASCADE,
+    FOREIGN KEY (id_reply) REFERENCES REDDIMT_Reply(id) ON DELETE CASCADE
 );
 
 CREATE TABLE REDDIMT_Cir_Category_Post
@@ -120,6 +120,6 @@ CREATE TABLE REDDIMT_Cir_Category_Post
     id_group varchar(128) NOT NULL,
     id_post varchar(128) NOT NULL,
     CONSTRAINT PK_LCir_Category_Post PRIMARY KEY (id_group,id_post),
-    FOREIGN KEY (id_group) REFERENCES REDDIMT_Group(id),
-    FOREIGN KEY (id_post) REFERENCES REDDIMT_Post(id)
+    FOREIGN KEY (id_group) REFERENCES REDDIMT_Group(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_post) REFERENCES REDDIMT_Post(id) ON DELETE CASCADE
 );
