@@ -28,7 +28,8 @@ public class CustomMethodSecurityExpressionHandler extends DefaultMethodSecurity
             applicationContext.getBean(RoleServiceGroup.class),
             applicationContext.getBean(RoleServiceSchool.class),
             applicationContext.getBean(PostService.class),
-            applicationContext.getBean(GroupService.class));
+            applicationContext.getBean(GroupService.class),
+            applicationContext.getBean(UserService.class));
         root.setTrustResolver(this.trustResolver);
         root.setPermissionEvaluator(getPermissionEvaluator());
 
